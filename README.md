@@ -1,4 +1,6 @@
-# Quizzical Quagmire: a gamified quiz app that combines subway surfer with a traditional quiz app like QuizUp or Kahoot
+# Dawn Quizote: Submission for Epyphite Corp Take Home Assignment
+
+Dawn Quizote is a parkour enthusiast and Pop Quiz aficionado. Help her get good at both in this gamified quiz app that combines subway surfer with a traditional quiz app like QuizUp or Kahoot!
 
 ## Design Justification
 
