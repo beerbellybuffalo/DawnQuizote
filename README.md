@@ -12,8 +12,8 @@ The correct answer to each question must be provided within a specified time lim
 
 ## Features
 
-*required 1. Flexible system to add, update, and manage quiz questions and categories
-2. High Score Indicator so the player can track if they have improved
+*required 1. Flexible system to add, update, and manage quiz questions and categories  
+2. High Score Indicator so the player can track if they have improved  
 3. Menu Options
 
 - Select Quiz from Catalogue
