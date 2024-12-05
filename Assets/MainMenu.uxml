@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/MainMenu.uss?fileID=7433441132597879392&amp;guid=cc30ac215f9a2774eb38766e665abcc4&amp;type=3#MainMenu" />
+    <ui:VisualElement name="Panel" class="panel" style="flex-grow: 1; align-items: center; align-content: center;">
+        <ui:VisualElement name="Title" style="flex-grow: 1; width: 100%; align-items: center; position: relative; justify-content: flex-start; top: 10%; flex-shrink: 1; background-image: url(&quot;project://database/Assets/2D/01%20Main%20Menu/BIG%20Dawn%20Quizote%20Separate%20TEXT.png?fileID=2800000&amp;guid=bc6f509919142684e91155630d9accfa&amp;type=3#BIG Dawn Quizote Separate TEXT&quot;); -unity-background-scale-mode: scale-to-fit; height: auto; flex-basis: auto;" />
+        <ui:VisualElement name="FreezePose" style="flex-grow: 1; width: 100%; align-items: center; position: absolute; justify-content: flex-start; top: -4px; flex-shrink: 1; background-image: url(&quot;project://database/Assets/2D/01%20Main%20Menu/Dawn%20Freeze%20Pose%204.png?fileID=2800000&amp;guid=3147add3880505b4ca8968f0be574d08&amp;type=3#Dawn Freeze Pose 4&quot;); -unity-background-scale-mode: scale-to-fit; height: 38px; flex-basis: auto;" />
+        <ui:VisualElement name="Menu" class="menu" style="flex-grow: 1; align-content: center; align-items: center; justify-content: center;">
+            <ui:Button text="Let&apos;s Go!" name="Button" class="yellow-button" />
+            <ui:Button text="Settings" name="Button" class="yellow-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

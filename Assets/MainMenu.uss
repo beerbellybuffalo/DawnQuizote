@@ -1,0 +1,23 @@
+.panel {
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.hide {
+    display: none;
+}
+
+.menu {
+}
+
+.unity-button {
+}
+
+.hide {
+    display: none;
+}
+
+.yellow-button {
+    background-color: rgba(255, 255, 255, 0);
+    background-image: url("project://database/Assets/2D/00%20General%20UI/Yellow%20Button.png?fileID=2800000&guid=b323390645b01794b879a4c0d35851b2&type=3#Yellow Button");
+    -unity-background-scale-mode: stretch-to-fill;
+}
