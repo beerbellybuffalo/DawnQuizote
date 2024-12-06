@@ -1,8 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(QuizCatalogueScriptableObject))]
-public class QuizCatalogueEditor : Editor
+[CustomEditor(typeof(MyQuizzesScriptableObject))]
+public class MyQuizzesEditor : Editor
 {
     public override void OnInspectorGUI()
     {
@@ -10,7 +10,7 @@ public class QuizCatalogueEditor : Editor
         DrawDefaultInspector();
 
         // Get the target ScriptableObject
-        QuizCatalogueScriptableObject catalogue = (QuizCatalogueScriptableObject)target;
+        MyQuizzesScriptableObject catalogue = (MyQuizzesScriptableObject)target;
 
         // Iterate through quizzes and questions
         foreach (var quiz in catalogue.quizzes)

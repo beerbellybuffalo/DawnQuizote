@@ -1,12 +1,12 @@
 using System.IO;
 using UnityEngine;
 using System.Linq;
-using static QuizCatalogueScriptableObject;
+using static MyQuizzesScriptableObject;
 
 public class QuizManager : MonoBehaviour
 {
     // Reference to the ScriptableObject instance in the inspector
-    public QuizCatalogueScriptableObject quizCatalogueData;
+    public MyQuizzesScriptableObject myQuizzesData;
 
     private string filePath => Application.persistentDataPath + "/quizzes.json";
 
@@ -17,7 +17,7 @@ public class QuizManager : MonoBehaviour
         {
             string json = File.ReadAllText(filePath);
             // Manually load from JSON if needed
-            quizCatalogueData = JsonUtility.FromJson<QuizCatalogueScriptableObject>(json);
+            myQuizzesData = JsonUtility.FromJson<MyQuizzesScriptableObject>(json);
         }
         else
         {
@@ -28,7 +28,7 @@ public class QuizManager : MonoBehaviour
     // Save quizzes to file (optional: if you want to save data)
     public void SaveQuizzes()
     {
-        string json = JsonUtility.ToJson(quizCatalogueData, true);
+        string json = JsonUtility.ToJson(myQuizzesData, true);
         File.WriteAllText(filePath, json);
     }
 
@@ -37,7 +37,7 @@ public class QuizManager : MonoBehaviour
     {
         // Create a new quiz and add it to the catalogue
         Quiz newQuiz = new Quiz { quizName = name };
-        quizCatalogueData.quizzes.Add(newQuiz);
+        myQuizzesData.quizzes.Add(newQuiz);
 
         // Optionally save changes to file
         SaveQuizzes();
@@ -46,10 +46,10 @@ public class QuizManager : MonoBehaviour
     // Delete a quiz by name
     public void DeleteQuizByName(string quizName)
     {
-        var quizToRemove = quizCatalogueData.quizzes.FirstOrDefault(q => q.quizName == quizName);
+        var quizToRemove = myQuizzesData.quizzes.FirstOrDefault(q => q.quizName == quizName);
         if (quizToRemove != null)
         {
-            quizCatalogueData.quizzes.Remove(quizToRemove);
+            myQuizzesData.quizzes.Remove(quizToRemove);
             SaveQuizzes();  // Optionally save changes to file
         }
         else
@@ -61,9 +61,9 @@ public class QuizManager : MonoBehaviour
     // Delete a quiz by index (as in original code)
     public void DeleteQuizByIndex(int index)
     {
-        if (index >= 0 && index < quizCatalogueData.quizzes.Count)
+        if (index >= 0 && index < myQuizzesData.quizzes.Count)
         {
-            quizCatalogueData.quizzes.RemoveAt(index);
+            myQuizzesData.quizzes.RemoveAt(index);
             SaveQuizzes();  // Optionally save changes to file
         }
     }

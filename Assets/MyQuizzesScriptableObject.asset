@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72581bf63aa608948a132a857f8479b5, type: 3}
-  m_Name: QuizCatalogueScriptableObject
+  m_Name: MyQuizzesScriptableObject
   m_EditorClassIdentifier: 
   quizzes:
   - quizName: Mental Sums

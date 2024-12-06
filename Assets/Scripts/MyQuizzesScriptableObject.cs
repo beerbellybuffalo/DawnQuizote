@@ -2,10 +2,10 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using static QuizCatalogueScriptableObject;
+using static MyQuizzesScriptableObject;
 
-[CreateAssetMenu(fileName = "QuizCatalogueScriptableObject", menuName = "Scriptable Objects/QuizCatalogueScriptableObject")]
-public class QuizCatalogueScriptableObject : ScriptableObject
+[CreateAssetMenu(fileName = "MyQuizzesScriptableObject", menuName = "Scriptable Objects/MyQuizzesScriptableObject")]
+public class MyQuizzesScriptableObject : ScriptableObject
 {
     [System.Serializable]
     public class Option
