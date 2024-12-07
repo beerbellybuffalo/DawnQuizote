@@ -24,6 +24,8 @@ public class MainMenuController : MonoBehaviour
     //quiz selection elements
     private Button CreateQuizBtn;
     private Button DeleteAllQuizzesBtn;
+    private Button MentalSumsBtn;
+
     //creating quiz NAME elements
     private Button SaveQuizNameBtn;
     private TextField InputQuizNameField;
@@ -39,8 +41,14 @@ public class MainMenuController : MonoBehaviour
     //delete all?
     private Button ConfirmDeleteAllQuizzesBtn;
     private Button GoBackBtn;
+    //play mode page elements
+    private Button PauseBtn;
+    //pause mode page elements
+    private Button ResumeBtn;
+    private Button RestartBtn;
+    //private Button ReturnToMainMenuBtn;
 
-    //pages
+    //PAGES
     private VisualElement activePage; //the page that is currently active
 
     private VisualElement mainMenuPage;
@@ -49,6 +57,8 @@ public class MainMenuController : MonoBehaviour
     private VisualElement creatingQuizQuestionsPage;
     private VisualElement deleteAllQuizzesConfirmationPage;
     private VisualElement allQuizzesDeletedPage;
+    private VisualElement playModePage;
+    private VisualElement pauseModePage;
 
     private void Awake()
     {
@@ -62,7 +72,9 @@ public class MainMenuController : MonoBehaviour
         creatingQuizQuestionsPage = Root.Q<VisualElement>("CreatingQuizQuestionsPage");
         deleteAllQuizzesConfirmationPage = Root.Q<VisualElement>("DeleteAllQuizzesConfirmationPage");
         allQuizzesDeletedPage = Root.Q<VisualElement>("AllQuizzesDeletedPage");
-
+        playModePage = Root.Q<VisualElement>("PlayModePage");
+        pauseModePage = Root.Q<VisualElement>("PauseModePage");
+        //initialise activePage as mainMenuPage
         activePage = mainMenuPage;
     }
     private void OnEnable()
@@ -74,6 +86,8 @@ public class MainMenuController : MonoBehaviour
             homeButton.clicked += () =>
             {
                 activePage.style.display = DisplayStyle.None;
+                //this is for the case where returning from pause to main menu
+                pauseModePage.style.display = DisplayStyle.None;
                 mainMenuPage.style.display = DisplayStyle.Flex;
                 activePage = mainMenuPage;
             };
@@ -99,6 +113,8 @@ public class MainMenuController : MonoBehaviour
         CreateQuizBtn.clicked += OnCreateQuizButtonClicked;
         DeleteAllQuizzesBtn = Root.Q<Button>("DeleteAllQuizzes");
         DeleteAllQuizzesBtn.clicked += OnDeleteAllQuizzesButtonClicked;
+        MentalSumsBtn = Root.Q<Button>("MentalSums");
+        MentalSumsBtn.clicked += OnMentalSumsButtonClicked;
 
         //Buttons on Creating Quiz Page
         SaveQuizNameBtn = Root.Q<Button>("SaveQuizName");
@@ -130,6 +146,17 @@ public class MainMenuController : MonoBehaviour
         GoBackBtn = Root.Q<Button>("GoBack");
         GoBackBtn.clicked += OnGoBackButtonButtonClicked;
 
+        //pause button on play mode page
+        PauseBtn = Root.Q<Button>("Pause");
+        PauseBtn.clicked += OnPauseButtonClicked;
+
+        //Buttons on pause menu
+        ResumeBtn = Root.Q<Button>("Resume");
+        ResumeBtn.clicked += OnResumeButtonClicked;
+        RestartBtn = Root.Q<Button>("Restart");
+        RestartBtn.clicked += OnRestartButtonClicked;
+        //ReturnToMainMenuBtn = Root.Q<Button>("ReturnToMainMenu");
+        //ReturnToMainMenuBtn.clicked += OnReturnToMainMenuButtonClicked;
     }
 
     /// <summary>
@@ -202,6 +229,13 @@ public class MainMenuController : MonoBehaviour
         quizSelectionPage.style.display = DisplayStyle.None;
         deleteAllQuizzesConfirmationPage.style.display = DisplayStyle.Flex;
         activePage = deleteAllQuizzesConfirmationPage;
+    }
+    private void OnMentalSumsButtonClicked()
+    {
+        //change to play mode page
+        activePage.style.display = DisplayStyle.None;
+        playModePage.style.display = DisplayStyle.Flex;
+        activePage = playModePage;
     }
 
     //CREATING QUIZ NAME PAGE
@@ -276,9 +310,13 @@ public class MainMenuController : MonoBehaviour
         {
             if (string.IsNullOrEmpty(field.value))
             {
-                field.value = "Quiz name cannot be empty.";
+                field.value = "Field cannot be empty.";
                 field.style.color = new StyleColor(Color.red);
                 allFieldsFilled = false;
+            }
+            else 
+            {
+                field.style.color = new StyleColor(Color.black);
             }
         }
         if (allFieldsFilled)
@@ -354,5 +392,36 @@ public class MainMenuController : MonoBehaviour
         quizSelectionPage.style.display = DisplayStyle.Flex;
         activePage = quizSelectionPage;
     }
+
+    //PLAY MODE PAGE
+    private void OnPauseButtonClicked()
+    {
+        pauseModePage.style.display = DisplayStyle.Flex;
+        activePage = pauseModePage;
+        //pause the game time
+        Time.timeScale = 0;
+    }
+
+    //PAUSE MODE PAGE
+    private void OnResumeButtonClicked()
+    {
+        pauseModePage.style.display = DisplayStyle.None;
+        activePage = playModePage;
+        //unpause the game time
+        Time.timeScale = 1;
+    }
+    private void OnRestartButtonClicked()
+    {
+        pauseModePage.style.display = DisplayStyle.None;
+        activePage = playModePage;
+        //unpause the game time
+        Time.timeScale = 1;
+
+        //ADD LOGIC HERE FOR STARTING FROM BEGINNING OF THE QUIZ
+    }
+    //private void OnReturnToMainMenuButtonClicked()
+    //{ 
+        //same as home buttons
+    //}
 }
 
