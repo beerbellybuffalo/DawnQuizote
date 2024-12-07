@@ -7,6 +7,7 @@ You can find the final builds for Android and iOS in their respective folders in
 Unfortunately, because I don't have an active Apple Developer account, I cannot provide a test link via Test Flight, I can only provide the compiled program files in addition to the Unity project files.
 
 ## Design Justification
+![Dawn_Running](https://github.com/user-attachments/assets/3c5ea703-5e27-45f0-8f80-7f88e5e95087)
 
 The reason for the use of subway surfer gameplay is to use the 3D aspect of Unity in a way that increases user engagement, even though 3D is not strictly required for a quiz app. The dynamic movement in the background and the idea of doing parkour while answering questions adds to a sense of urgency which is helpful for quizzes that are timed.
 
