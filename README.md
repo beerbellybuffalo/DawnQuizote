@@ -3,6 +3,9 @@
 Dawn Quizote is a parkour enthusiast and Pop Quiz aficionado. Help her get good at both in this gamified quiz app that combines subway surfer with a traditional quiz app like QuizUp or Kahoot!
 This is a link to the [figma prototype](https://tinyurl.com/danielEpyphiteAppMockup)
 
+You can find the final builds for Android and iOS in their respective folders in Builds > Android, Builds > iOS.
+Unfortunately, because I don't have an active Apple Developer account, I cannot provide a test link via Test Flight, I can only provide the compiled program files in addition to the Unity project files.
+
 ## Design Justification
 
 The reason for the use of subway surfer gameplay is to use the 3D aspect of Unity in a way that increases user engagement, even though 3D is not strictly required for a quiz app. The dynamic movement in the background and the idea of doing parkour while answering questions adds to a sense of urgency which is helpful for quizzes that are timed.
