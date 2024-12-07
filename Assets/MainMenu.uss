@@ -111,8 +111,6 @@
 }
 
 .grid-container {
-    display: grid;
-    grid-template-columns: ;
     gap: 10px;
     overflow: hidden;
 }
@@ -132,10 +130,53 @@
 }
 
 .back-button:active {
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(255, 228, 112);
     background-image: url("project://database/Assets/2D/00%20General%20UI/back_icon.png?fileID=2800000&guid=2580c73ae79ea574fbef3204450b3656&type=3#back_icon");
     -unity-background-image-tint-color: rgba(255, 228, 112, 0.49);
 }
 
+#unity-low-button {
+    display: none;
+}
+
+#unity-high-button {
+    display: none;
+}
+
+#unity-content-and-vertical-scroll-container {
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+#unity-content-viewport {
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.unity-scroll-view__content-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.home-button:active {
+    background-color: rgb(255, 228, 112);
+    background-image: url("project://database/Assets/2D/00%20General%20UI/home_icon.png?fileID=2800000&guid=8b2f8ae4984e4c84b9e4d7a4340bc53f&type=3#home_icon");
+    -unity-background-image-tint-color: rgba(255, 228, 112, 0.49);
+    opacity: 1;
+}
+
+.home-button {
+    background-image: url("project://database/Assets/2D/00%20General%20UI/home_icon.png?fileID=2800000&guid=8b2f8ae4984e4c84b9e4d7a4340bc53f&type=3#home_icon");
+}
+
 .back-button {
+    background-image: url("project://database/Assets/2D/00%20General%20UI/back_icon.png?fileID=2800000&guid=2580c73ae79ea574fbef3204450b3656&type=3#back_icon");
 }
