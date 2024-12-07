@@ -1,6 +1,7 @@
 # Dawn Quizote: Submission for Epyphite Corp Take Home Assignment
 
 Dawn Quizote is a parkour enthusiast and Pop Quiz aficionado. Help her get good at both in this gamified quiz app that combines subway surfer with a traditional quiz app like QuizUp or Kahoot!
+This is a link to the [figma prototype](https://tinyurl.com/danielEpyphiteAppMockup)
 
 ## Design Justification
 
