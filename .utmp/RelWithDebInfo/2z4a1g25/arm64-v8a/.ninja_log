@@ -1,0 +1,12 @@
+# ninja log v5
+72	839	7552901840015065	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	d3c4e871ddafcf20
+842	1298	7552901845094498	C:/Users/tangj/OneDrive/Desktop/Epyphite_Quiz_App/Epyphite Quiz App/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2z4a1g25/obj/arm64-v8a/libswappywrapper.so	39821f19a6f04a5
+54	1951	7552901851543995	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	7a2853129135b27e
+65	2011	7552901852119787	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	31722edcd5b96008
+30	2012	7552901852124886	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	d7a3d5669f071e02
+60	2128	7552901853313914	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	6616a333d500760f
+38	2129	7552901853336313	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	ec6b55829799876f
+3	2200	7552901854058513	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	6fb56c785e02ce55
+47	2394	7552901855990713	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	3b03faad91bf5a09
+17	2551	7552901857646885	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	e2dfc874dbb8c9d9
+2552	2645	7552901858615362	C:/Users/tangj/OneDrive/Desktop/Epyphite_Quiz_App/Epyphite Quiz App/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2z4a1g25/obj/arm64-v8a/libgame.so	293d6172674ace3e

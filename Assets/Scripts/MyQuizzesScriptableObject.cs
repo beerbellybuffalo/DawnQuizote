@@ -12,7 +12,7 @@ public class MyQuizzesScriptableObject : ScriptableObject
     {
         public string optionText;
         [Tooltip("Check to indicate that this is the correct answer")]
-        public bool isCorrect;
+        public bool isCorrect = false; //false by default
     }
 
     [System.Serializable]
@@ -21,14 +21,14 @@ public class MyQuizzesScriptableObject : ScriptableObject
         public string questionText;
 
         [Tooltip("Questions can only have a maximum of 4 options.")]
-        public Option[] options = new Option[4];
+        public List<Option> options = new();
 
         // Enforce size in code
         public void EnforceOptionSize()
         {
-            if (options.Length != 4)
+            if (options.Count > 4)
             {
-                Array.Resize(ref options, 4); // Resize to 4 elements
+                options = options.Take(4).ToList(); // Resize to 4 elements
             }
         }
     }

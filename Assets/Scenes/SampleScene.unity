@@ -766,8 +766,9 @@ GameObject:
   - component: {fileID: 1877806932}
   - component: {fileID: 1877806931}
   - component: {fileID: 1877806933}
+  - component: {fileID: 1877806934}
   m_Layer: 5
-  m_Name: Menu
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -819,6 +820,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6499fda4eff1d842a29c28645908ddd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1877806934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877806930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dece56d04382204cafc176eebe858cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myQuizzesData: {fileID: 11400000, guid: c86284b0fc91071489db7309fe969685, type: 2}
 --- !u!1001 &1973443493
 PrefabInstance:
   m_ObjectHideFlags: 0
