@@ -35,7 +35,7 @@ public class QuizManager : MonoBehaviour
             myQuizzesData.quizzes = tempData.quizzes;
             Debug.Log("Quiz data successfully loaded from persistent storage.");
 
-            mainMenuController.ClearMyQuizzesScrollView();
+            //mainMenuController.ClearMyQuizzesScrollView();
             foreach (var quiz in myQuizzesData.quizzes)
             {
                 mainMenuController.CreateButtonInMyQuizzes(quiz.quizName);
@@ -85,7 +85,7 @@ public class QuizManager : MonoBehaviour
         if (string.IsNullOrEmpty(name))
         {
             InputQuizNameField.label = "Quiz name cannot be empty.";
-            InputQuizNameField.labelElement.style.color = new StyleColor(Color.red); // Optional: make it red
+            InputQuizNameField.labelElement.style.color = new StyleColor(Color.white);
             return false;
         }
         //if quiz does not already exist, add it
@@ -103,9 +103,9 @@ public class QuizManager : MonoBehaviour
         }
         else // quiz already exists, show a warning message
         {
-            Debug.LogWarning($"Quiz named {name} already exists, try something else!");
-            InputQuizNameField.label = $"Quiz named {name} already exists, try something else!";
-            InputQuizNameField.labelElement.style.color = new StyleColor(Color.red);
+            Debug.LogWarning($"Quiz named '{name}' already exists, try something else!");
+            InputQuizNameField.label = $"Quiz named '{name}' already exists, try something else!";
+            InputQuizNameField.labelElement.style.color = new StyleColor(Color.white);
             return false;
         }
     }
@@ -159,7 +159,7 @@ public class QuizManager : MonoBehaviour
                 SaveQuizzes();
 
                 //SHOW FEEDBACK NOTIFICATION ON UI
-                mainMenuController.ShowNotificationText($"Question Added! The Quiz '{quizName}' has {QuizToAddQuestion.questions.Count}/10 questions");
+                mainMenuController.ShowNotificationText(new StyleColor(Color.green),$"Question Added! The Quiz '{quizName}' has {QuizToAddQuestion.questions.Count}/10 questions");
             }
             else
             {

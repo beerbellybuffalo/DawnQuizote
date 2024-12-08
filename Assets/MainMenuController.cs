@@ -85,9 +85,14 @@ public class MainMenuController : MonoBehaviour
         {
             homeButton.clicked += () =>
             {
+                if (activePage == pauseModePage)
+                { 
+                    //this is for the case where returning from pause to main menu
+                    playModePage.style.display = DisplayStyle.None;
+                    //unpause the game time
+                    Time.timeScale = 1;
+                }
                 activePage.style.display = DisplayStyle.None;
-                //this is for the case where returning from pause to main menu
-                pauseModePage.style.display = DisplayStyle.None;
                 mainMenuPage.style.display = DisplayStyle.Flex;
                 activePage = mainMenuPage;
             };
@@ -132,6 +137,31 @@ public class MainMenuController : MonoBehaviour
         AddAltOption1Field = Root.Q<TextField>("AddAltOption1Field");
         AddAltOption2Field = Root.Q<TextField>("AddAltOption2Field");
         AddAltOption3Field = Root.Q<TextField>("AddAltOption3Field");
+
+        //register callbacks to clear these fields when the user clicks on them
+        //this is so that the "Field cannot be empty" message will be cleared.
+        // Register a FocusInEvent callback to clear the text when the TextField is focused
+        AddQuestionField.RegisterCallback<FocusInEvent>(evt =>
+        {
+            AddQuestionField.value = string.Empty; // Clear the text
+        });
+        AddCorrectAnswerField.RegisterCallback<FocusInEvent>(evt =>
+        {
+            AddCorrectAnswerField.value = string.Empty; // Clear the text
+        });
+        AddAltOption1Field.RegisterCallback<FocusInEvent>(evt =>
+        {
+            AddAltOption1Field.value = string.Empty; // Clear the text
+        });
+        AddAltOption2Field.RegisterCallback<FocusInEvent>(evt =>
+        {
+            AddAltOption2Field.value = string.Empty; // Clear the text
+        });
+        AddAltOption3Field.RegisterCallback<FocusInEvent>(evt =>
+        {
+            AddAltOption3Field.value = string.Empty; // Clear the text
+        });
+
         //Buttons on Creating Quiz QUESTIONS Page
         SaveQuestionBtn = Root.Q<Button>("SaveQuestion");
         SaveQuestionBtn.clicked += OnSaveQuestionButtonClicked;
@@ -183,12 +213,15 @@ public class MainMenuController : MonoBehaviour
                 if (buttonToRemove != null)
                 { 
                     ScrollViewMyQuizzes.Remove(buttonToRemove);
-                    Debug.Log($"Removed {buttonToRemove}");
+                    Debug.LogWarning($"Removed {buttonToRemove}");
                 }
 
                 //delete the latest quiz
                 quizManager.DeleteQuizByIndex(quizManager.myQuizzesData.quizzes.Count-1);
             }
+            //clear the quiz name label and value
+            InputQuizNameField.label = string.Empty;
+            InputQuizNameField.value = string.Empty;
             activePage.style.display = DisplayStyle.None;
             quizSelectionPage.style.display = DisplayStyle.Flex;
             activePage = quizSelectionPage;
@@ -246,8 +279,11 @@ public class MainMenuController : MonoBehaviour
         if (quizManager.AddQuiz(InputQuizNameField, InputQuizNameField.value))
         {
             // Add a new button under "My Quizzes"
-            CreateButtonInMyQuizzes(InputQuizNameField.value);
+            //CreateButtonInMyQuizzes(InputQuizNameField.value);
 
+            //clear the quiz name label and value
+            InputQuizNameField.label = string.Empty;
+            InputQuizNameField.value = string.Empty;
             //GO TO THE NEXT PAGE TO CREATE QUIZ QUESTIONS
             creatingQuizNamePage.style.display = DisplayStyle.None;
             creatingQuizQuestionsPage.style.display = DisplayStyle.Flex;
@@ -308,7 +344,7 @@ public class MainMenuController : MonoBehaviour
         QuestionInputs.Add(AddAltOption3Field);
         foreach (var field in QuestionInputs)
         {
-            if (string.IsNullOrEmpty(field.value))
+            if (string.IsNullOrEmpty(field.value) || field.value == "Field cannot be empty.")
             {
                 field.value = "Field cannot be empty.";
                 field.style.color = new StyleColor(Color.red);
@@ -333,8 +369,9 @@ public class MainMenuController : MonoBehaviour
             }
         }
     }
-    public void ShowNotificationText(string notification)
+    public void ShowNotificationText(StyleColor style, string notification)
     {
+        NotificationText.style.color = style;
         NotificationText.text = notification;
     }
 
@@ -347,16 +384,16 @@ public class MainMenuController : MonoBehaviour
         }
         else
         {
-            NotificationText.style.color = new StyleColor(Color.red);
-            ShowNotificationText("Must have at least 1 question");
+            ShowNotificationText(new StyleColor(Color.red),"Must have at least 1 question");
         }
     }
     private IEnumerator SaveAndWaitBeforeGoingToMyQuizzes()
     { 
         quizManager.SaveQuizzes();
-        NotificationText.style.color = new StyleColor(Color.green);
-        ShowNotificationText("Quiz Saved.");
-        quizManager.LoadQuizzes();
+        ShowNotificationText(new StyleColor(Color.green),"Quiz Saved. Returning to quiz selection");
+        Quiz latestQuiz = quizManager.myQuizzesData.quizzes.Last();
+        CreateButtonInMyQuizzes(latestQuiz.quizName);
+        //quizManager.LoadQuizzes();
         yield return new WaitForSeconds(2f);
         //navigate to quiz selection page
         creatingQuizQuestionsPage.style.display = DisplayStyle.None;
