@@ -3,7 +3,7 @@
 Dawn Quizote is a parkour enthusiast and Pop Quiz aficionado. Help her get good at both in this gamified quiz app that combines subway surfer with a traditional quiz app like QuizUp or Kahoot!
 This is a link to the [figma prototype](https://tinyurl.com/danielEpyphiteAppMockup)
 
-You can find the final builds for Android and iOS in their respective folders in Builds > Android, Builds > iOS.
+You can find the final builds for Android and iOS under Releases.
 Unfortunately, because I don't have an active Apple Developer account, I cannot provide a test link via Test Flight, I can only provide the compiled program files in addition to the Unity project files.
 
 ## Design Justification
