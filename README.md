@@ -18,12 +18,12 @@ Dawn Quizote is a parkour enthusiast and Pop Quiz aficionado. Help her get good 
 This is a link to the [figma prototype](https://tinyurl.com/danielEpyphiteAppMockup)
 
 You can find the final builds for Android and iOS under Releases.
-Android builds can be installed and run directly onto Android devices. Unfortunately, because I don't have an active Apple Developer account, I cannot provide a test link via Test Flight to install iOS builds via the Apple App Store. I can only provide the compiled program files in a zipped folder under the Releases section of this repository.
+Android builds can be installed and run directly onto Android devices. Unfortunately, because I don't have an active Apple Developer account, I cannot upload the app directly to the App Store, or provide a test link via Test Flight to install iOS builds. I can only provide the compiled program files in a zipped folder under the Releases section of this repository.
 
 ## Design Justification
 ![Dawn_Running](https://github.com/user-attachments/assets/3c5ea703-5e27-45f0-8f80-7f88e5e95087)
 
-"Subway Surfers" is a mobile game that falls under the genre of Endless Runner, where the goal is to keep running for as long as possible while collecting coins and avoiding hazards. My quiz app follows this running format, but with a key difference that each round of gameplay ends when all questions in a quiz have been attempted.
+["Subway Surfers"](https://poki.com/en/g/subway-surfers) is a mobile game that falls under the genre of Endless Runner, where the goal is to keep running for as long as possible while collecting coins and avoiding hazards. My quiz app follows this running format, but with a key difference that each round of gameplay ends when all questions in a quiz have been attempted.
 The reason for this format is to **use the 3D aspect of Unity in a way that increases user engagement, even though 3D is not strictly required for a quiz app**. The dynamic movement in the background and the idea of doing parkour while answering questions adds to a sense of urgency which is helpful for quizzes that are timed.
 
 ## Quiz Gameplay
