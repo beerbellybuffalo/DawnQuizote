@@ -4,6 +4,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using System;
 using static MyQuizzesScriptableObject;
 
 public class MainMenuController : MonoBehaviour
@@ -17,6 +18,12 @@ public class MainMenuController : MonoBehaviour
     //common elements
     private List<Button> homeButtons;
     private List<Button> backButtons;
+
+    //button 2D textures, assign in inspector
+    public Texture2D YellowButtonTexture;
+    public Texture2D GreenButtonTexture;
+    public Texture2D RedButtonTexture;
+
     //main menu elements
     private Button LetsGoBtn;
     private Button SettingsBtn;
@@ -43,10 +50,22 @@ public class MainMenuController : MonoBehaviour
     private Button GoBackBtn;
     //play mode page elements
     private Button PauseBtn;
+    private Label QuestionTextLabel;
+    private Button Option1Btn;
+    private Button Option2Btn;
+    private Button Option3Btn;
+    private Button Option4Btn;
+    private List<Button> OptionButtons;
+    private Question currentQuestion;
+
     //pause mode page elements
     private Button ResumeBtn;
     private Button RestartBtn;
     //private Button ReturnToMainMenuBtn;
+
+    //Quiz Completed Page Total Score Text Label
+    private Label TotalScoreLabel;
+    private int TotalScore;
 
     //PAGES
     private VisualElement activePage; //the page that is currently active
@@ -59,6 +78,7 @@ public class MainMenuController : MonoBehaviour
     private VisualElement allQuizzesDeletedPage;
     private VisualElement playModePage;
     private VisualElement pauseModePage;
+    private VisualElement quizCompletedPage;
 
     private void Awake()
     {
@@ -74,8 +94,13 @@ public class MainMenuController : MonoBehaviour
         allQuizzesDeletedPage = Root.Q<VisualElement>("AllQuizzesDeletedPage");
         playModePage = Root.Q<VisualElement>("PlayModePage");
         pauseModePage = Root.Q<VisualElement>("PauseModePage");
+        quizCompletedPage = Root.Q<VisualElement>("QuizCompletedPage");
+
         //initialise activePage as mainMenuPage
         activePage = mainMenuPage;
+
+        //init total score to zero
+        TotalScore = 0;
     }
     private void OnEnable()
     {
@@ -176,9 +201,73 @@ public class MainMenuController : MonoBehaviour
         GoBackBtn = Root.Q<Button>("GoBack");
         GoBackBtn.clicked += OnGoBackButtonButtonClicked;
 
-        //pause button on play mode page
+        //on play mode page
+        //pause button 
         PauseBtn = Root.Q<Button>("Pause");
         PauseBtn.clicked += OnPauseButtonClicked;
+        //question text label
+        QuestionTextLabel = Root.Q<Label>("QuestionTextPlayMode");
+        //option buttons
+        Option1Btn = Root.Q<Button>("Option1");
+        Option2Btn = Root.Q<Button>("Option2");
+        Option3Btn = Root.Q<Button>("Option3");
+        Option4Btn = Root.Q<Button>("Option4");
+        OptionButtons = new() { Option1Btn , Option2Btn , Option3Btn , Option4Btn };
+
+        //define similar onclick logic for each option button
+        foreach (var optionButton in OptionButtons)
+        {
+            optionButton.clicked += () =>
+            {
+                if (!isAnswering) return;
+                isAnswering = false; // Prevent multiple selections
+                //Check whether the selected option is correct
+                string correctOption = currentQuestion.options.Find(o => o.isCorrect).optionText;
+
+                //verify button textures are not null at runtime
+                Debug.LogWarning($"GreenButtonTexture: {GreenButtonTexture}, RedButtonTexture: {RedButtonTexture}");
+
+                if (optionButton.text == correctOption)
+                {
+                    Debug.LogWarning("Correct Answer Selected!");
+                    TotalScore++;
+                    //set the option colour to GREEN
+                    try
+                    {
+                        //optionButton.style.backgroundImage = null;
+                        //optionButton.style.backgroundImage = new StyleBackground(GreenButtonTexture);
+                        //Debug.LogWarning($"Style set to: {optionButton.style.backgroundImage}");
+
+                        //TEMPORARILY CHANGE THE TEXT COLOUR INSTEAD
+                        optionButton.style.color = Color.green;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogWarning("Could not update button to green");
+                        Debug.LogWarning($"Exception: {e}");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("Wrong Answer Selected!");
+                    //set the option colour to RED
+                    try
+                    {
+                        //optionButton.style.backgroundImage = null;
+                        //optionButton.style.backgroundImage = new StyleBackground(RedButtonTexture);
+                        //Debug.LogWarning($"Style set to: {optionButton.style.backgroundImage}");
+
+                        //TEMPORARILY CHANGE THE TEXT COLOUR INSTEAD
+                        optionButton.style.color = Color.red;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogWarning("Could not update button to red");
+                        Debug.LogWarning($"Exception: {e}");
+                    }
+                }
+            };
+        }
 
         //Buttons on pause menu
         ResumeBtn = Root.Q<Button>("Resume");
@@ -187,6 +276,9 @@ public class MainMenuController : MonoBehaviour
         RestartBtn.clicked += OnRestartButtonClicked;
         //ReturnToMainMenuBtn = Root.Q<Button>("ReturnToMainMenu");
         //ReturnToMainMenuBtn.clicked += OnReturnToMainMenuButtonClicked;
+
+        //quiz completed page
+        TotalScoreLabel = Root.Q<Label>("TotalScoreMessage");
     }
 
     /// <summary>
@@ -269,6 +361,7 @@ public class MainMenuController : MonoBehaviour
         activePage.style.display = DisplayStyle.None;
         playModePage.style.display = DisplayStyle.Flex;
         activePage = playModePage;
+        StartCoroutine(PlayMentalSumsQuiz());
     }
 
     //CREATING QUIZ NAME PAGE
@@ -449,16 +542,101 @@ public class MainMenuController : MonoBehaviour
     }
     private void OnRestartButtonClicked()
     {
-        pauseModePage.style.display = DisplayStyle.None;
-        activePage = playModePage;
-        //unpause the game time
-        Time.timeScale = 1;
+        //TEMPORARILY DISABLE THIS FIRST UNTIL LOGIC FOR RESTARTING HAS BEEN IMPLEMENTED
+        //pauseModePage.style.display = DisplayStyle.None;
+        //activePage = playModePage;
+        ////unpause the game time
+        //Time.timeScale = 1;
 
         //ADD LOGIC HERE FOR STARTING FROM BEGINNING OF THE QUIZ
     }
     //private void OnReturnToMainMenuButtonClicked()
     //{ 
-        //same as home buttons
+    //same as home buttons
     //}
+
+    //These variables are needed for Mental Sums Quiz
+    private bool isAnswering = false;
+
+    private IEnumerator PlayMentalSumsQuiz()
+    {
+        List<Quiz> popularQuizzes = quizManager.myQuizzesData.popularQuizzes;
+        Quiz MentalSumsQuiz = quizManager.myQuizzesData.GetQuizByName("Mental Sums", popularQuizzes);
+        foreach (Question qn in MentalSumsQuiz.questions)
+        {
+            currentQuestion = qn;
+            
+            // Update UI with question and options
+            UpdateUIWithQuestion(qn);
+
+            // Wait for player's answer or timeout
+            isAnswering = true;
+            yield return StartCoroutine(HandleAnswerTimeout(10));
+
+            // Wait for 1 second before showing the next question
+            yield return new WaitForSeconds(1);
+
+            // Reset button colors for the next question
+            foreach (var optionButton in OptionButtons)
+            {
+                //optionButton.style.backgroundImage = new StyleBackground(YellowButtonTexture);
+
+                //FOR NOW, RESET THE BUTTON TEXT TO BLACK
+                optionButton.style.color = Color.black;
+            }
+        }
+
+        // Quiz complete
+        Debug.Log("Mental Sums Quiz Completed!");
+        //navigate to the quiz completed page for 2 seconds, then go back to quiz selection page
+        StartCoroutine(ShowQuizCompleteThenBackToSelection(MentalSumsQuiz));
+    }
+    private IEnumerator ShowQuizCompleteThenBackToSelection(Quiz completedQuiz)
+    {
+        //Update the text label in quiz completed page to show total score
+        TotalScoreLabel.text = $"You scored {TotalScore}/{completedQuiz.questions.Count} on 'Mental Sums'.";
+        //navigate to quiz completed page
+        activePage.style.display = DisplayStyle.None; //hide play mode screen
+        quizCompletedPage.style.display = DisplayStyle.Flex;
+        activePage = quizCompletedPage;
+        yield return new WaitForSeconds(2f);
+        //navigate to quiz selection page
+        activePage.style.display = DisplayStyle.None;
+        quizSelectionPage.style.display = DisplayStyle.Flex;
+        activePage = quizSelectionPage;
+        //reset both label and score
+        TotalScoreLabel.text = string.Empty;
+        TotalScore = 0;
+    }
+
+    void UpdateUIWithQuestion(Question qn)
+    {
+        //Update Question Text
+        QuestionTextLabel.text = qn.questionText;
+        //Update Button Texts
+        Option1Btn.text = qn.options[0].optionText;
+        Option2Btn.text = qn.options[1].optionText;
+        Option3Btn.text = qn.options[2].optionText;
+        Option4Btn.text = qn.options[3].optionText;
+    }
+    IEnumerator HandleAnswerTimeout(float timeout)
+    {
+        float elapsed = 0;
+
+        while (elapsed < timeout && isAnswering)
+        {
+            elapsed += Time.deltaTime;
+            yield return null; // Wait for next frame
+        }
+
+        if (isAnswering)
+        {
+            // Timeout: No answer selected
+            Debug.Log("Time's up! No answer selected.");
+            isAnswering = false;
+        }
+    }
+
+
 }
 

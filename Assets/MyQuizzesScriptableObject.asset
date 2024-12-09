@@ -13,3 +13,46 @@ MonoBehaviour:
   m_Name: MyQuizzesScriptableObject
   m_EditorClassIdentifier: 
   quizzes: []
+  popularQuizzes:
+  - quizName: Mental Sums
+    questions:
+    - questionText: 'Question1:        1+1 ?'
+      options:
+      - optionText: 1
+        isCorrect: 0
+      - optionText: 2
+        isCorrect: 1
+      - optionText: 3
+        isCorrect: 0
+      - optionText: 4
+        isCorrect: 0
+    - questionText: 'Question2:        1-1 ?'
+      options:
+      - optionText: 1
+        isCorrect: 0
+      - optionText: 2
+        isCorrect: 0
+      - optionText: 3
+        isCorrect: 0
+      - optionText: 0
+        isCorrect: 1
+    - questionText: 'Question3:        1x1 ?'
+      options:
+      - optionText: 1
+        isCorrect: 1
+      - optionText: 2
+        isCorrect: 0
+      - optionText: 3
+        isCorrect: 0
+      - optionText: 0
+        isCorrect: 0
+    - questionText: 'Question4:        1/1 ?'
+      options:
+      - optionText: 3
+        isCorrect: 0
+      - optionText: 2
+        isCorrect: 0
+      - optionText: 1
+        isCorrect: 1
+      - optionText: 0
+        isCorrect: 0

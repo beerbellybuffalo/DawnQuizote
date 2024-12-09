@@ -4,8 +4,8 @@
         <ui:VisualElement name="MainMenuPage" enabled="true" class="page" style="flex-grow: 1; align-items: center; align-content: center; background-image: url(&quot;project://database/Assets/2D/01%20Main%20Menu/BG.png?fileID=2800000&amp;guid=05bcb966e0623b5499a963bbb2da3a7e&amp;type=3#BG&quot;); display: flex; visibility: visible; opacity: 1; position: relative; height: 100%; width: 100%;">
             <ui:VisualElement name="Title" style="flex-grow: 1; width: 100%; align-items: center; position: relative; justify-content: center; top: 10%; flex-shrink: 1; background-image: url(&quot;project://database/Assets/2D/01%20Main%20Menu/Title_4x_trimmed.png?fileID=2800000&amp;guid=26b32cacdcd004b4db51b0d6d090ef00&amp;type=3#Title_4x_trimmed&quot;); -unity-background-scale-mode: scale-to-fit; height: auto; flex-basis: auto; align-content: center; background-color: rgba(0, 0, 0, 0); margin-bottom: 15%;" />
             <ui:VisualElement name="MainMenu" class="menu" style="flex-grow: 1; align-content: center; align-items: center; justify-content: center; width: 100%; height: 50%; flex-basis: 10%; align-self: auto; flex-shrink: 1;">
-                <ui:Button text="Let&apos;s Go!" name="LetsGo" class="yellow-button" style="align-items: stretch; align-content: flex-start;" />
-                <ui:Button text="Settings" name="Settings" class="yellow-button" />
+                <ui:Button text="Let&apos;s Go!" name="LetsGo" class="yellow-button" style="align-items: stretch; align-content: flex-start; background-image: url(&quot;project://database/Assets/2D/00%20General%20UI/Yellow%20Button.png?fileID=2800000&amp;guid=b323390645b01794b879a4c0d35851b2&amp;type=3#Yellow Button&quot;);" />
+                <ui:Button text="Settings" name="Settings" class="yellow-button" style="opacity: 0.6;" />
                 <ui:Button text="Quit" name="Quit" class="red-button" style="min-width: auto; align-items: center; overflow: hidden;" />
             </ui:VisualElement>
         </ui:VisualElement>
@@ -75,11 +75,23 @@
         </ui:VisualElement>
         <ui:VisualElement name="PlayModePage" class="page" style="flex-grow: 1; display: none; background-image: none; align-content: flex-start; align-self: auto; justify-content: flex-start;">
             <ui:VisualElement name="TopBar" style="flex-grow: 2; background-image: none; -unity-background-scale-mode: scale-to-fit; flex-shrink: 1; flex-basis: auto; position: relative; margin-top: 5%; margin-bottom: 0; align-items: stretch; margin-right: 10%; margin-left: 10%; flex-direction: row; display: flex;">
-                <ui:VisualElement name="QuizNameAndQuestion" style="flex-grow: 1;" />
-                <ui:VisualElement style="flex-grow: 1; display: flex;" />
+                <ui:VisualElement style="flex-grow: 1;">
+                    <ui:VisualElement name="QuizNamePlayMode" style="flex-grow: 1;" />
+                    <ui:VisualElement name="Score" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="QuestionNumberPlayMode" style="flex-grow: 1; display: flex;" />
                 <ui:VisualElement name="Timer" style="flex-grow: 1;" />
             </ui:VisualElement>
-            <ui:VisualElement name="QuizBody" style="flex-grow: 8;" />
+            <ui:VisualElement name="QuizBody" style="flex-grow: 7; align-items: center; align-self: center; justify-content: flex-start; align-content: flex-start;">
+                <ui:VisualElement name="QuizContent" style="flex-grow: 4; align-content: flex-start; align-self: auto; justify-content: flex-start; align-items: center; flex-wrap: nowrap; flex-direction: column;">
+                    <ui:Label text="&lt;Question Text Here&gt;" name="QuestionTextPlayMode" style="justify-content: flex-start; align-self: auto; align-content: center; -unity-text-align: upper-center; align-items: center; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Epilogue-SemiBold.ttf?fileID=12800000&amp;guid=f86b3ff67c442bf4e9ea06e35021d7ec&amp;type=3#Epilogue-SemiBold&quot;); font-size: 30%; background-image: url(&quot;project://database/Assets/2D/00%20General%20UI/Empty%20Field.png?fileID=2800000&amp;guid=a9d3c2a98948e2e4e81d67f15495012d&amp;type=3#Empty Field&quot;); -unity-background-scale-mode: stretch-to-fill; width: 90%; flex-wrap: nowrap; white-space: normal; text-overflow: clip;" />
+                    <ui:Button text="Option 1" name="Option1" class="yellow-button" style="overflow: hidden; opacity: 1; -unity-background-scale-mode: stretch-to-fill; white-space: normal; flex-grow: 0; flex-wrap: nowrap; text-overflow: clip; width: auto; min-width: 30%; max-width: 70%; align-items: center; font-size: 30%; max-height: none;" />
+                    <ui:Button text="Option 2" name="Option2" class="yellow-button" style="overflow: hidden; opacity: 1; -unity-background-scale-mode: stretch-to-fill; white-space: normal; flex-grow: 0; flex-wrap: nowrap; text-overflow: clip; width: auto; min-width: 30%; max-width: 70%; align-items: center; font-size: 30%; max-height: none;" />
+                    <ui:Button text="Option 3&#10;" name="Option3" class="yellow-button" style="overflow: hidden; opacity: 1; -unity-background-scale-mode: stretch-to-fill; white-space: normal; flex-grow: 0; flex-wrap: nowrap; text-overflow: clip; width: auto; min-width: 30%; max-width: 70%; align-items: center; font-size: 30%; max-height: none;" />
+                    <ui:Button text="Option 4" name="Option4" class="yellow-button" style="overflow: hidden; opacity: 1; -unity-background-scale-mode: stretch-to-fill; white-space: normal; flex-grow: 0; flex-wrap: nowrap; text-overflow: clip; width: auto; min-width: 30%; max-width: 70%; align-items: center; font-size: 30%; max-height: none;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="EmptySpaceForViewingAnimation" style="flex-grow: 3;" />
+            </ui:VisualElement>
             <ui:VisualElement name="BottomBar" style="flex-grow: 1; flex-direction: row; max-height: 10%; padding-left: 2%; padding-bottom: 2%; align-items: auto;">
                 <ui:Button enabled="true" name="Pause" class="back-button" style="background-color: rgba(255, 255, 255, 0); background-image: url(&quot;project://database/Assets/2D/05%20Play%20Mode/pause_icon.png?fileID=2800000&amp;guid=5d31e8882bf90474a976b0b9f3b80e39&amp;type=3#pause_icon&quot;); -unity-background-scale-mode: scale-to-fit; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; opacity: 1;" />
             </ui:VisualElement>
@@ -87,8 +99,14 @@
         <ui:VisualElement name="PauseModePage" class="page" style="flex-grow: 1; display: none; background-image: none; align-content: flex-start; align-self: auto; justify-content: flex-start;">
             <ui:VisualElement name="PauseMenu" class="menu" style="flex-grow: 1; align-content: center; align-items: center; justify-content: center; width: 100%; height: 50%; flex-basis: 10%; align-self: auto; flex-shrink: 1; background-color: rgba(161, 161, 161, 0.49);">
                 <ui:Button text="Resume" name="Resume" class="yellow-button" style="align-items: stretch; align-content: flex-start;" />
-                <ui:Button text="Restart" name="Restart" class="yellow-button" />
+                <ui:Button text="Restart" name="Restart" class="yellow-button" style="opacity: 0.6;" />
                 <ui:Button text="Return To Main Menu" name="Home" class="red-button" style="min-width: auto; align-items: center; overflow: hidden;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="QuizCompletedPage" class="page" style="flex-grow: 1; display: none; background-image: none; align-content: flex-start; align-self: auto; justify-content: flex-start; flex-wrap: nowrap; align-items: stretch;">
+            <ui:VisualElement name="TitleQuizCompleted" class="image" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/2D/08%20Complete/Quiz%20Completed.png?fileID=2800000&amp;guid=a728007340642f84989a613d45e368be&amp;type=3#Quiz Completed&quot;); -unity-background-scale-mode: scale-to-fit; flex-shrink: 1; flex-basis: auto; position: relative; margin-top: 5%; margin-bottom: 0; align-items: stretch; margin-right: 10%; margin-left: 10%;" />
+            <ui:VisualElement style="flex-grow: 1;">
+                <ui:Label text="You Scored:" name="TotalScoreMessage" parse-escape-sequences="false" style="flex-grow: 1; flex-shrink: 1; align-self: center; justify-content: center; align-content: auto; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Epilogue-SemiBold.ttf?fileID=12800000&amp;guid=f86b3ff67c442bf4e9ea06e35021d7ec&amp;type=3#Epilogue-SemiBold&quot;); font-size: 30%; white-space: normal; background-image: none; -unity-background-scale-mode: scale-to-fit; background-color: rgb(255, 255, 255); align-items: stretch; max-height: 50%;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

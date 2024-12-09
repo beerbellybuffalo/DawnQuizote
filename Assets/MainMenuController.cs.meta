@@ -3,7 +3,10 @@ guid: a6499fda4eff1d842a29c28645908ddd
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - YellowButtonTexture: {fileID: 2800000, guid: b323390645b01794b879a4c0d35851b2, type: 3}
+  - GreenButtonTexture: {fileID: 2800000, guid: e94cae9a4e841584aab0417a66f1467b, type: 3}
+  - RedButtonTexture: {fileID: 2800000, guid: a05967a59299f9745ad0e42805a43448, type: 3}
   executionOrder: 10100
   icon: {instanceID: 0}
   userData: 
