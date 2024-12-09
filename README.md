@@ -32,21 +32,23 @@ When the player selects a quiz, they will begin a parkour sequence which will co
 
 The correct answer to each question must be provided within a specified time limit (10s per question by default), for the runner to clear the obstacle parkour-style. Each correct answer will add to a total score, with quicker answers being rewarded with more points. Otherwise, if an incorrect answer is given or they have run out of time, they will stumble/collide with the obstacle and not receive any points for the question. At the end, the player will be shown their final score.
 
-**You may try out the Mental Sums quiz under Popular Quizzes to see the gameplay. (As of v1.0.3 this is still a work in progress)**
+```diff
+! **You may try out the Mental Sums quiz under Popular Quizzes to see the gameplay. (As of v1.0.3 this is still a work in progress)**
+```
 
 ## Features as of v1.0.3
-✔️ = Completed
-⌛ = In Progress
+✔️ = Completed  
+⌛ = In Progress  
 ### Quiz-related
 (*required in brief) 1. Flexible system to add, update, and manage quiz questions and categories
-✔️Browse Existing Quizzes
-✔️Create New Quiz
-✔️Delete All Quizzes
-⌛Delete Single Quiz
-⌛Edit Single Quiz
+✔️Browse Existing Quizzes  
+✔️Create New Quiz  
+✔️Delete All Quizzes  
+⌛Delete Single Quiz  
+⌛Edit Single Quiz  
 ### General
-⌛Quiz Play Mode main logic
-✔️Pause App
-✔️Quit App
+⌛Quiz Play Mode main logic  
+✔️Pause App  
+✔️Quit App  
 ⌛High Score Indicator per quiz so the player can track if they have improved  
-⌛Menu Settings to adjust music and sfx
+⌛Menu Settings to adjust music and sfx  
