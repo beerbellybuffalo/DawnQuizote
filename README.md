@@ -22,6 +22,7 @@ Android builds can be installed and run directly onto Android devices. Unfortuna
 
 ## Design Justification
 ![Dawn_Running](https://github.com/user-attachments/assets/3c5ea703-5e27-45f0-8f80-7f88e5e95087)  
+![Demo Video](https://img.youtube.com/vi/shorts/hFnKn5Q473E/0.jpg)
 **This is a preview of the gameplay in Dawn Quizote.**
 
 ["Subway Surfers"](https://poki.com/en/g/subway-surfers) is a mobile game that falls under the genre of Endless Runner, where the goal is to keep running for as long as possible while collecting coins and avoiding hazards. My quiz app follows this running format, but with a key difference that each round of gameplay ends when all questions in a quiz have been attempted.
