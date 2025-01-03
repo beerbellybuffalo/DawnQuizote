@@ -39,6 +39,7 @@ public class MyQuizzesScriptableObject : ScriptableObject
         public string quizName;
         [Tooltip("Quizzes can only have a maximum of 10 questions.")]
         public List<Question> questions = new List<Question>();
+        public int HighScore = -1; //-1 as the default value to check for
 
         // Enforce size of options in each question
         public void EnforceQuestionOptionsSize()
