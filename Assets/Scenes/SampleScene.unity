@@ -149,7 +149,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -821,7 +821,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1124,6 +1124,7 @@ GameObject:
   - component: {fileID: 1877806931}
   - component: {fileID: 1877806933}
   - component: {fileID: 1877806934}
+  - component: {fileID: 1877806935}
   m_Layer: 5
   m_Name: GameManager
   m_TagString: Untagged
@@ -1181,6 +1182,26 @@ MonoBehaviour:
   YellowButtonTexture: {fileID: 2800000, guid: b323390645b01794b879a4c0d35851b2, type: 3}
   GreenButtonTexture: {fileID: 2800000, guid: a05967a59299f9745ad0e42805a43448, type: 3}
   RedButtonTexture: {fileID: 2800000, guid: e94cae9a4e841584aab0417a66f1467b, type: 3}
+  _Q1: {fileID: 2800000, guid: 8e52a144570be694a9b937295d55989d, type: 3}
+  _Q2: {fileID: 2800000, guid: 2c9d47625634f824da3b50df28c0dce3, type: 3}
+  _Q3: {fileID: 2800000, guid: 031830baa844a494bac7cd33ce6e65c0, type: 3}
+  _Q4: {fileID: 2800000, guid: 0f128c9f34ab0a949b683af7869ae88a, type: 3}
+  _Q5: {fileID: 2800000, guid: b3a48acf946171d4082f5b0c741474e8, type: 3}
+  _Q6: {fileID: 2800000, guid: d3bf88eca17a1744c9adcb589c36b6bd, type: 3}
+  _Q7: {fileID: 2800000, guid: 2c1aae1c73cc92146b31d1e8c31e2631, type: 3}
+  _Q8: {fileID: 2800000, guid: 80337a149c7efee4aa40c4c17412bf5b, type: 3}
+  _Q9: {fileID: 2800000, guid: 42539803563160e43a30fa33383c3236, type: 3}
+  _Q10: {fileID: 2800000, guid: f7295f6f494c09649a5c6ef5ea4d6487, type: 3}
+  _Total1: {fileID: 2800000, guid: ac64fa6b1e4d16f49a636eb9507a27c4, type: 3}
+  _Total2: {fileID: 2800000, guid: f31ee5cd37351714ba8522135c4dc940, type: 3}
+  _Total3: {fileID: 2800000, guid: 2d783e80444ac364a9ea03acd4db3f76, type: 3}
+  _Total4: {fileID: 2800000, guid: 00f74aeff1b165c48976a4f8ada12617, type: 3}
+  _Total5: {fileID: 2800000, guid: 982a9c3275898d04faf83b0fd5de2759, type: 3}
+  _Total6: {fileID: 2800000, guid: 006351a2142ab1f46b89f8e58deddfcd, type: 3}
+  _Total7: {fileID: 2800000, guid: 782db5505a2155b4b8a9e8b531d7d46a, type: 3}
+  _Total8: {fileID: 2800000, guid: a1c947343301cb048af1de4bd7ff4570, type: 3}
+  _Total9: {fileID: 2800000, guid: d8cce9e00b54c114d90947fee9b12e27, type: 3}
+  _Total10: {fileID: 2800000, guid: d1e27085367741843a867b83042bd77a, type: 3}
   _1seconds: {fileID: 2800000, guid: b8a07e9a4a756a24d955f99932588bf5, type: 3}
   _2seconds: {fileID: 2800000, guid: 52a31e93cef6da04a80a3c5dcb481ee2, type: 3}
   _3seconds: {fileID: 2800000, guid: 755e583e59b6cd245bb467f38d0bb6e8, type: 3}
@@ -1192,16 +1213,16 @@ MonoBehaviour:
   _9seconds: {fileID: 2800000, guid: 0c5889c7aaa10e8419cca09c901ceb83, type: 3}
   _10seconds: {fileID: 2800000, guid: fbcf1b853d1d97b4eb0191fbe43cea17, type: 3}
   _0Percent: {fileID: 2800000, guid: 66eb6664497f79d40a6040a6e748b5b5, type: 3}
-  _10Percent: {fileID: 0}
-  _20Percent: {fileID: 0}
-  _30Percent: {fileID: 0}
-  _40Percent: {fileID: 0}
-  _50Percent: {fileID: 0}
-  _60Percent: {fileID: 0}
-  _70Percent: {fileID: 0}
-  _80Percent: {fileID: 0}
-  _90Percent: {fileID: 0}
-  _100Percent: {fileID: 0}
+  _10Percent: {fileID: 2800000, guid: 4047139c85f838340b7acdaf680e08b9, type: 3}
+  _20Percent: {fileID: 2800000, guid: 84d682b2a8ced0d4f956251b4927105b, type: 3}
+  _30Percent: {fileID: 2800000, guid: e9695065550c364408cf775fca2f60f3, type: 3}
+  _40Percent: {fileID: 2800000, guid: 05e4c30dec5b1d64d9b0c8c2ec38cdce, type: 3}
+  _50Percent: {fileID: 2800000, guid: bc638e07e39fd1243ad9e9043c4d763c, type: 3}
+  _60Percent: {fileID: 2800000, guid: c62e1cd16841b384ba954dbf3e6c42af, type: 3}
+  _70Percent: {fileID: 2800000, guid: bd3d1656a8e664d44873b2d66d16cc73, type: 3}
+  _80Percent: {fileID: 2800000, guid: c25301db613ef114ca4025c2c54f97f8, type: 3}
+  _90Percent: {fileID: 2800000, guid: eee801f6d1ede9b4daf0c0cd90a91649, type: 3}
+  _100Percent: {fileID: 2800000, guid: 953a7e7a5666855459be47bf5d14c742, type: 3}
 --- !u!114 &1877806934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1215,6 +1236,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myQuizzesData: {fileID: 11400000, guid: c86284b0fc91071489db7309fe969685, type: 2}
+--- !u!114 &1877806935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877806930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffcc936fc568ee944ad7637f639ebc6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1973443493
 PrefabInstance:
   m_ObjectHideFlags: 0

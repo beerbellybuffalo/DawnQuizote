@@ -6,14 +6,16 @@ using System.Collections;
 using System.Linq;
 using System;
 using static MyQuizzesScriptableObject;
+using System.Net;
 public class MainMenuController : MonoBehaviour
 {
     //reference to quiz manager script which contains the logic for handling quiz data
     private QuizManager quizManager;
 
     //reference to active quiz
-    private Quiz activeQuiz;
-    
+    private Quiz activeQuiz = null;
+    private Quiz previousQuiz = null;
+
     //reference to audio manager
     private AudioManager audioManager;
 
@@ -74,6 +76,31 @@ public class MainMenuController : MonoBehaviour
     private Question currentQuestion;
     private Label QuizNameTextLabel;
     private Label HighScoreTextLabel;
+    private bool isAnswering;
+
+    //Question Number UI
+    private VisualElement QuestionNumber;
+    private VisualElement QuestionTotal;
+    [SerializeField] private Texture2D _Q1;
+    [SerializeField] private Texture2D _Q2;
+    [SerializeField] private Texture2D _Q3;
+    [SerializeField] private Texture2D _Q4;
+    [SerializeField] private Texture2D _Q5;
+    [SerializeField] private Texture2D _Q6;
+    [SerializeField] private Texture2D _Q7;
+    [SerializeField] private Texture2D _Q8;
+    [SerializeField] private Texture2D _Q9;
+    [SerializeField] private Texture2D _Q10;
+    [SerializeField] private Texture2D _Total1;
+    [SerializeField] private Texture2D _Total2;
+    [SerializeField] private Texture2D _Total3;
+    [SerializeField] private Texture2D _Total4;
+    [SerializeField] private Texture2D _Total5;
+    [SerializeField] private Texture2D _Total6;
+    [SerializeField] private Texture2D _Total7;
+    [SerializeField] private Texture2D _Total8;
+    [SerializeField] private Texture2D _Total9;
+    [SerializeField] private Texture2D _Total10;
 
     //Timer UI
     private VisualElement Timer;
@@ -107,16 +134,22 @@ public class MainMenuController : MonoBehaviour
     private Button RestartBtn;
     //private Button ReturnToMainMenuBtn; //THIS IS ASSIGNED TO HAVE SAME BEHAVIOUR AS HOME BUTTON, via UI BUILDER.
 
-    //Quiz Completed Page Total Score, High Score and Final Score Indicator
+    //Quiz Completed Page
+    /// <summary>
+    /// Total Score, High Score, Final Score Indicator, Buttons to try again or return to quiz selection
+    /// </summary>
     private Label TotalScoreLabel;
     private Label HighScoreLabel;
     private VisualElement FinalScoreIndicator;
+    private Button TryAgainBtn;
+    private Button DoAnotherQuizBtn;
     private int TotalScore;
 
     //PAGES
     private VisualElement activePage; //the page that is currently active
 
     private VisualElement mainMenuPage;
+    private VisualElement settingsPage;
     private VisualElement quizSelectionPage;
     private VisualElement creatingQuizNamePage;
     private VisualElement creatingQuizQuestionsPage;
@@ -135,6 +168,7 @@ public class MainMenuController : MonoBehaviour
         Root = GetComponent<UIDocument>().rootVisualElement;
         // Query for the pages by their names
         mainMenuPage = Root.Q<VisualElement>("MainMenuPage");
+        settingsPage = Root.Q<VisualElement>("SettingsPage");
         quizSelectionPage = Root.Q<VisualElement>("QuizSelectionPage");
         creatingQuizNamePage = Root.Q<VisualElement>("CreatingQuizNamePage");
         creatingQuizQuestionsPage = Root.Q<VisualElement>("CreatingQuizQuestionsPage");
@@ -147,13 +181,17 @@ public class MainMenuController : MonoBehaviour
 
         // Other Visual Elements
         Timer = Root.Q<VisualElement>("Timer");
+        QuestionNumber = playModePage.Q<VisualElement>("QuestionNumber");
+        QuestionTotal = playModePage.Q<VisualElement>("QuestionTotal");
+
         scoreIndicator = Root.Q<VisualElement>("ScoreIndicator");
         FinalScoreIndicator = Root.Q<VisualElement>("FinalScoreIndicator");
 
         //initialise activePage as mainMenuPage
         activePage = mainMenuPage;
 
-        //init total score to zero
+        //init variables for Play mode
+        isAnswering = false;
         TotalScore = 0;
     }
     private void OnEnable()
@@ -188,17 +226,18 @@ public class MainMenuController : MonoBehaviour
             homeButton.clicked += () =>
             {
                 if (activePage == pauseModePage) //this is for the case where returning from pause to main menu
-                { 
-                    //switch bgm
-                    audioManager.PlayMusic("Main Menu bgm");
-
+                {
                     playModePage.style.display = DisplayStyle.None;
                     //unpause the game time
                     Time.timeScale = 1;
+                    StartCoroutine(EndQuizAndNavigateToPage(mainMenuPage));
                 }
-                activePage.style.display = DisplayStyle.None;
-                mainMenuPage.style.display = DisplayStyle.Flex;
-                activePage = mainMenuPage;
+                else
+                { 
+                    activePage.style.display = DisplayStyle.None;
+                    mainMenuPage.style.display = DisplayStyle.Flex;
+                    activePage = mainMenuPage;
+                }
             };
         }
         backButtons = Root.Query<Button>("Back").ToList();
@@ -312,7 +351,7 @@ public class MainMenuController : MonoBehaviour
 
                 if (optionButton.text == correctOption)
                 {
-                    Debug.LogWarning("Correct Answer Selected!");
+                    //Debug.LogWarning("Correct Answer Selected!");
                     // play correct answer sound
                     audioManager.PlaySFX("Correct Answer");
                     // play flip animation and flip sound
@@ -340,7 +379,7 @@ public class MainMenuController : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("Wrong Answer Selected!");
+                    //Debug.LogWarning("Wrong Answer Selected!");
                     // play wrong answer sound
                     audioManager.PlaySFX("Wrong Answer");
                     //play stumble animation and stumble sound
@@ -376,19 +415,16 @@ public class MainMenuController : MonoBehaviour
         //quiz completed page
         TotalScoreLabel = Root.Q<Label>("TotalScoreMessage");
         HighScoreLabel = Root.Q<Label>("HighScoreMessage");
+        TryAgainBtn = Root.Q<Button>("TryAgain");
+        TryAgainBtn.clicked += OnTryAgainButtonClicked;
+        DoAnotherQuizBtn = Root.Q<Button>("DoAnotherQuiz");
+        DoAnotherQuizBtn.clicked += OnDoAnotherQuizButtonClicked;
     }
 
     /// <summary>
     /// Methods for handling button click events.
     /// </summary>
 
-    //COMMON
-    //private void OnHomeButtonClicked()
-    //{
-    //    activePage.style.display = DisplayStyle.None;
-    //    mainMenuPage.style.display = DisplayStyle.Flex;
-    //    activePage = mainMenuPage;
-    //}
     private void OnBackButtonClicked()
     {
         if (activePage == creatingQuizNamePage || activePage == creatingQuizQuestionsPage)
@@ -429,7 +465,9 @@ public class MainMenuController : MonoBehaviour
     }
     private void OnSettingsButtonClicked()
     {
-        
+        mainMenuPage.style.display = DisplayStyle.None;
+        settingsPage.style.display = DisplayStyle.Flex;
+        activePage = settingsPage;
     }
     private void OnQuitButtonClicked()
     {
@@ -456,23 +494,14 @@ public class MainMenuController : MonoBehaviour
     }
     private void OnMentalSumsButtonClicked()
     {
-        //change to play mode page
-        activePage.style.display = DisplayStyle.None;
-        playModePage.style.display = DisplayStyle.Flex;
-        activePage = playModePage;
         StartCoroutine(PlayQuiz(MentalSumsBtn.text));
     }
 
     //CREATING QUIZ NAME PAGE
     private void OnSaveQuizNameButtonClicked()
     {
-        //if (InputQuizNameField.value != null) // if something was typed in
-        //{
         if (quizManager.AddQuiz(InputQuizNameField, InputQuizNameField.value))
         {
-            // Add a new button under "My Quizzes"
-            //CreateButtonInMyQuizzes(InputQuizNameField.value);
-
             //clear the quiz name label and value
             InputQuizNameField.label = string.Empty;
             InputQuizNameField.value = string.Empty;
@@ -481,12 +510,6 @@ public class MainMenuController : MonoBehaviour
             creatingQuizQuestionsPage.style.display = DisplayStyle.Flex;
             activePage = creatingQuizQuestionsPage;
         };
-
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("Quiz Name Field is Empty, please provide a valid Name");
-        //}
     }
 
     public void ClearMyQuizzesScrollView()
@@ -519,7 +542,9 @@ public class MainMenuController : MonoBehaviour
         ScrollView ScrollViewMyQuizzes = Root.Q<ScrollView>("ScrollViewMyQuizzes");
         Button newQuizButton = new Button();
         newQuizButton.text = name;
+        newQuizButton.name = name;
         newQuizButton.AddToClassList("yellow-button");
+        newQuizButton.clicked += () => StartCoroutine(PlayQuiz(name));
         ScrollViewMyQuizzes.Add(newQuizButton);
     }
 
@@ -641,24 +666,24 @@ public class MainMenuController : MonoBehaviour
     }
     private void OnRestartButtonClicked()
     {
-        //TEMPORARILY DISABLE THIS FIRST UNTIL LOGIC FOR RESTARTING HAS BEEN IMPLEMENTED
-        //pauseModePage.style.display = DisplayStyle.None;
-        //activePage = playModePage;
-        ////unpause the game time
-        //Time.timeScale = 1;
-
+        pauseModePage.style.display = DisplayStyle.None;
+        activePage = playModePage;
+        //unpause the game time
+        Time.timeScale = 1;
         //ADD LOGIC HERE FOR STARTING FROM BEGINNING OF THE QUIZ
+        StartCoroutine(EndQuizAndNavigateToPage(playModePage));
     }
     //private void OnReturnToMainMenuButtonClicked()
     //{ 
     //same as home buttons
     //}
 
-    //These variables are needed for Mental Sums Quiz
-    private bool isAnswering = false;
-
     private IEnumerator PlayQuiz(string _quizName)
     {
+        //change to play mode page
+        activePage.style.display = DisplayStyle.None;
+        playModePage.style.display = DisplayStyle.Flex;
+        activePage = playModePage;
         //switch from main menu bgm to quiz bgm
         audioManager.PlayMusic("Quiz bgm");
         //set active quiz
@@ -674,33 +699,84 @@ public class MainMenuController : MonoBehaviour
             //search for quiz from My Quizzes and set the active quiz
             List<Quiz> myQuizzes = quizManager.myQuizzesData.quizzes;
             activeQuiz = quizManager.myQuizzesData.GetQuizByName(_quizName, myQuizzes);
-        } 
+        }
+        Debug.Log("Updating UI and starting quiz!");
         //update QuizNameText and HighScoreText
         QuizNameTextLabel.text = $"{activeQuiz.quizName}";
         HighScoreTextLabel.text = (activeQuiz.HighScore == -1) ? "-" :$"{activeQuiz.HighScore}";
-        foreach (Question qn in activeQuiz.questions)
+        //set quiz total number of questions
+        UpdateQuestionTotal(activeQuiz.questions.Count);
+        for(int i = 0;i<activeQuiz.questions.Count;i++)
         {
-            currentQuestion = qn;
+            currentQuestion = activeQuiz.questions[i];
             
             // Update UI with question and options
-            UpdateUIWithQuestion(qn);
+            UpdateQuestionUI(currentQuestion, i+1);
 
             // Wait for player's answer or timeout, and update UI countdown timer each second
             isAnswering = true;
             yield return StartCoroutine(HandleTimerAndAnswerTimeout(10));
-
-            // Reset button colors for the next question
-            foreach (var optionButton in OptionButtons)
-            {
-                //optionButton.style.backgroundImage = new StyleBackground(YellowButtonTexture);
-
-                //FOR NOW, RESET THE BUTTON TEXT TO BLACK
-                optionButton.style.color = Color.black;
-                //RESET TIMER
-                UpdateTimerUI(10);
-            }
+            if (activeQuiz == null) break;
         }
 
+        if (activeQuiz != null)
+        { 
+            StartCoroutine(ShowQuizComplete(activeQuiz));
+        } 
+    }
+
+    private IEnumerator EndQuizAndNavigateToPage(VisualElement pageToNavigateTo)
+    {
+        yield return StartCoroutine(EndQuizAndResetUI());
+        //navigate to specified page
+        activePage.style.display = DisplayStyle.None;
+        pageToNavigateTo.style.display = DisplayStyle.Flex;
+        activePage = pageToNavigateTo;
+
+        if (pageToNavigateTo == playModePage)
+        {
+            yield return StartCoroutine(PlayQuiz(previousQuiz.quizName));
+        }
+        else
+        {
+            //switch bgm back to main menu bgm
+            audioManager.PlayMusic("Main Menu bgm");
+        }
+    }
+
+    private IEnumerator EndQuizAndResetUI()
+    {
+        previousQuiz = activeQuiz;
+        activeQuiz = null;
+        //RESET UI
+        //Reset Question
+        UpdateQuestionUI(null,-1);
+        //Reset button colors for the next question
+        foreach (var optionButton in OptionButtons)
+        {
+            //optionButton.style.backgroundImage = new StyleBackground(YellowButtonTexture);
+
+            //FOR NOW, RESET THE BUTTON TEXT TO BLACK AND EMPTY
+            optionButton.style.color = Color.black;
+            optionButton.text = string.Empty;
+        }
+        //Reset Timer
+        UpdateTimerUI(10);
+        //Reset labels, total score, score indicators
+        QuizNameTextLabel.text = string.Empty;
+        HighScoreLabel.text = string.Empty;
+        TotalScoreLabel.text = string.Empty;
+        HighScoreLabel.text = string.Empty;
+        TotalScore = 0;
+        scoreIndicator.style.backgroundImage = new StyleBackground(_0Percent);
+        FinalScoreIndicator.style.backgroundImage = new StyleBackground(_0Percent);
+
+        Debug.Log("Finished Resetting Quiz UI!");
+        yield break;
+    }
+
+    private IEnumerator ShowQuizComplete(Quiz completedQuiz)
+    {
         // Quiz complete
         Debug.Log($"{activeQuiz.quizName} Quiz Completed!");
         // Update High Score if needed
@@ -709,10 +785,6 @@ public class MainMenuController : MonoBehaviour
             activeQuiz.HighScore = TotalScore;
         }
 
-        StartCoroutine(ShowQuizCompleteThenBackToSelection(activeQuiz));
-    }
-    private IEnumerator ShowQuizCompleteThenBackToSelection(Quiz completedQuiz)
-    {
         //Update the text label in quiz completed page to show total score and high score
         TotalScoreLabel.text = $"You scored {TotalScore}/{completedQuiz.questions.Count} on '{completedQuiz.quizName}'.";
         HighScoreLabel.text = $"High Score: {completedQuiz.HighScore}";
@@ -723,47 +795,120 @@ public class MainMenuController : MonoBehaviour
         activePage.style.display = DisplayStyle.None; //hide play mode screen
         quizCompletedPage.style.display = DisplayStyle.Flex;
         activePage = quizCompletedPage;
-        //pause for 2 seconds, then go back to quiz selection page
-        yield return new WaitForSeconds(2f);
-        //switch bgm back to main menu bgm
-        audioManager.PlayMusic("Main Menu bgm");
-        //navigate to quiz selection page
-        activePage.style.display = DisplayStyle.None;
-        quizSelectionPage.style.display = DisplayStyle.Flex;
-        activePage = quizSelectionPage;
-        //reset labels, total score, score indicators
-        TotalScoreLabel.text = string.Empty;
-        HighScoreLabel.text = string.Empty;
-        TotalScore = 0;
-        scoreIndicator.style.backgroundImage = new StyleBackground(_0Percent);
-        FinalScoreIndicator.style.backgroundImage = new StyleBackground(_0Percent);
+
         //save quizzes so that highscores are persistent
         quizManager.SaveQuizzes();
+        yield break;
     }
 
-    void UpdateUIWithQuestion(Question qn)
+    void UpdateQuestionUI(Question qn, int currentNumber)
     {
-        int nextIndex;
-        //Update Question Text
-        QuestionTextLabel.text = qn.questionText;
-        //Randomise order of options so that it's different each time
-        System.Random rnd = new();
-        List<string>myOptions = new(){qn.options[0].optionText, qn.options[1].optionText, qn.options[2].optionText, qn.options[3].optionText};
-        //Update Button Texts
-        foreach (var button in OptionButtons)
+        if (qn == null)
         {
-            nextIndex = rnd.Next(myOptions.Count);
-            button.text = myOptions[nextIndex];
-            myOptions.RemoveAt(nextIndex);
+            QuestionTextLabel.text = string.Empty; //Reset qn
+        }
+        else
+        {
+            //Update Question Number and Question Total
+            UpdateQuestionNumber(currentNumber);
+
+            int nextIndex;
+            //Update Question Text
+            QuestionTextLabel.text = qn.questionText;
+            //Randomise order of options so that it's different each time
+            System.Random rnd = new();
+            List<string>myOptions = new(){qn.options[0].optionText, qn.options[1].optionText, qn.options[2].optionText, qn.options[3].optionText};
+            //Update Button Texts
+            foreach (var button in OptionButtons)
+            {
+                button.style.color = Color.black;
+                nextIndex = rnd.Next(myOptions.Count);
+                button.text = myOptions[nextIndex];
+                myOptions.RemoveAt(nextIndex);
+            }
         }
     }
 
-    private void UpdateScoreIndicator(int score)
+    private void UpdateQuestionNumber(int currentNumber)
+    {
+        switch (currentNumber)
+        {
+            case 1:
+                QuestionNumber.style.backgroundImage = new StyleBackground(_Q1);
+                break;
+            case 2:
+                QuestionNumber.style.backgroundImage = new StyleBackground(_Q2);
+                break;
+            case 3:
+                QuestionNumber.style.backgroundImage = new StyleBackground(_Q3);
+                break;
+            case 4:
+                QuestionNumber.style.backgroundImage = new StyleBackground(_Q4);
+                break;
+            case 5:
+                QuestionNumber.style.backgroundImage = new StyleBackground(_Q5);
+                break;
+            case 6:
+                QuestionNumber.style.backgroundImage = new StyleBackground(_Q6);
+                break;
+            case 7:
+                QuestionNumber.style.backgroundImage = new StyleBackground(_Q7);
+                break;
+            case 8:
+                QuestionNumber.style.backgroundImage = new StyleBackground(_Q8);
+                break;
+            case 9:
+                QuestionNumber.style.backgroundImage = new StyleBackground(_Q9);
+                break;
+            case 10:
+                QuestionNumber.style.backgroundImage = new StyleBackground(_Q10);
+                break;
+        }
+    }
+
+    private void UpdateQuestionTotal(int total)
+    {
+        switch (total)
+        { 
+            case 1:
+                QuestionTotal.style.backgroundImage = new StyleBackground(_Total1);
+                break;
+            case 2:
+                QuestionTotal.style.backgroundImage = new StyleBackground(_Total2);
+                break;
+            case 3:
+                QuestionTotal.style.backgroundImage = new StyleBackground(_Total3);
+                break;
+            case 4:
+                QuestionTotal.style.backgroundImage = new StyleBackground(_Total4);
+                break;
+            case 5:
+                QuestionTotal.style.backgroundImage = new StyleBackground(_Total5);
+                break;
+            case 6:
+                QuestionTotal.style.backgroundImage = new StyleBackground(_Total6);
+                break;
+            case 7:
+                QuestionTotal.style.backgroundImage = new StyleBackground(_Total7);
+                break;
+            case 8:
+                QuestionTotal.style.backgroundImage = new StyleBackground(_Total8);
+                break;
+            case 9:
+                QuestionTotal.style.backgroundImage = new StyleBackground(_Total9);
+                break;
+            case 10:
+                QuestionTotal.style.backgroundImage = new StyleBackground(_Total10);
+                break;
+        }
+    }
+
+        private void UpdateScoreIndicator(int score)
     {
         int percentToIndicate = (int)(100*score / activeQuiz.questions.Count); //truncated number
-        Debug.Log($"score: {score}");
-        Debug.Log($"total questions: {activeQuiz.questions.Count}");
-        Debug.Log($"{percentToIndicate} percent on indicator");
+        //Debug.Log($"score: {score}");
+        //Debug.Log($"total questions: {activeQuiz.questions.Count}");
+        //Debug.Log($"{percentToIndicate} percent on indicator");
         switch (percentToIndicate)
         {
             case int i when i>=0 && i<10:
@@ -807,8 +952,8 @@ public class MainMenuController : MonoBehaviour
     {
         int lastSecond = (int) Math.Ceiling(timeout);
         float elapsed = 0;
-
-        while (elapsed < timeout && isAnswering)
+        UpdateTimerUI(10); //always start with 10
+        while (elapsed < timeout && isAnswering && activeQuiz!=null)
         {
             //Calculate remaining seconds and update UI if needed
             int remainingSeconds = (int) Math.Ceiling(timeout - elapsed);
@@ -821,8 +966,11 @@ public class MainMenuController : MonoBehaviour
             elapsed += Time.deltaTime;
             yield return null; // Wait for next frame
         }
-
-        if (isAnswering)
+        if (activeQuiz == null)
+        {
+            yield break;
+        }
+        else if (isAnswering)
         {
             // Timeout: No answer selected
             Debug.Log("Time's up! No answer selected.");
@@ -831,8 +979,14 @@ public class MainMenuController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Question answered, waiting for animation");
+            //Debug.LogWarning("Question answered, waiting for animation");
             yield return StartCoroutine(WaitForAnimationToComplete());
+            if (activeQuiz == null) //e.g. if restart button was clicked mid-animation
+            {
+                //set the animation state to "Running" immediately
+                runnerAnimator.Play("Running");
+                ResumeEnvMovement();
+            }
         }
     }
 
@@ -899,6 +1053,8 @@ public class MainMenuController : MonoBehaviour
 
     IEnumerator WaitForAnimationToComplete()
     {
+        //all the checks for "activeQuiz" are to account for when the restart button is pressed mid-animation
+        
         int runningStateHash = Animator.StringToHash("Running");
         int stumbleStateHash = Animator.StringToHash("Stumble Shortened");
         AnimatorStateInfo animationStateInfo;
@@ -906,13 +1062,14 @@ public class MainMenuController : MonoBehaviour
         // Wait for the animation to transition out of the "Running" state, since it may not be instantaneous
         do
         {
+            if (activeQuiz == null) yield break;
             animationStateInfo = runnerAnimator.GetCurrentAnimatorStateInfo(0);
             yield return null;
         } while (animationStateInfo.shortNameHash == runningStateHash);
 
         //check if the animation state is "Stumble Shortened", and if so then pause the env movement
         animationStateInfo = runnerAnimator.GetCurrentAnimatorStateInfo(0);
-        if (animationStateInfo.shortNameHash == stumbleStateHash)
+        if (activeQuiz != null && animationStateInfo.shortNameHash == stumbleStateHash)
         {
             PauseEnvMovement();
         }
@@ -920,11 +1077,15 @@ public class MainMenuController : MonoBehaviour
         // Wait until the animation finishes and transitions back to "Running"
         do
         {
+            if (activeQuiz == null) yield break;
             animationStateInfo = runnerAnimator.GetCurrentAnimatorStateInfo(0);
             yield return null;
         } while (animationStateInfo.shortNameHash != runningStateHash);
 
-        ResumeEnvMovement();
+        if (activeQuiz != null)
+        { 
+            ResumeEnvMovement();
+        }
     }
 
     private void PauseEnvMovement()
@@ -946,6 +1107,16 @@ public class MainMenuController : MonoBehaviour
             //set the speed back to 4
             prefab.GetComponent<RoadHandler>().Speed = 4;
         }
+    }
+
+    //QUIZ COMPLETED PAGE
+    private void OnTryAgainButtonClicked()
+    {
+        StartCoroutine(EndQuizAndNavigateToPage(playModePage));
+    }
+    private void OnDoAnotherQuizButtonClicked()
+    {
+        StartCoroutine(EndQuizAndNavigateToPage(quizSelectionPage));
     }
 }
 

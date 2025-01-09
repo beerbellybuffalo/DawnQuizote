@@ -12,11 +12,114 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72581bf63aa608948a132a857f8479b5, type: 3}
   m_Name: MyQuizzesScriptableObject
   m_EditorClassIdentifier: 
-  quizzes: []
+  quizzes:
+  - quizName: how many letters in this word?
+    questions:
+    - questionText: red
+      options:
+      - optionText: 3
+        isCorrect: 1
+      - optionText: 1
+        isCorrect: 0
+      - optionText: 2
+        isCorrect: 0
+      - optionText: 4
+        isCorrect: 0
+    - questionText: green
+      options:
+      - optionText: 5
+        isCorrect: 1
+      - optionText: 0
+        isCorrect: 0
+      - optionText: 1
+        isCorrect: 0
+      - optionText: 2
+        isCorrect: 0
+    - questionText: yellow
+      options:
+      - optionText: 6
+        isCorrect: 1
+      - optionText: 1
+        isCorrect: 0
+      - optionText: 4
+        isCorrect: 0
+      - optionText: 5
+        isCorrect: 0
+    - questionText: blue
+      options:
+      - optionText: 4
+        isCorrect: 1
+      - optionText: 4
+        isCorrect: 0
+      - optionText: 4
+        isCorrect: 0
+      - optionText: 4
+        isCorrect: 0
+    - questionText: purple
+      options:
+      - optionText: 6
+        isCorrect: 1
+      - optionText: 5
+        isCorrect: 0
+      - optionText: 4
+        isCorrect: 0
+      - optionText: 3
+        isCorrect: 0
+    - questionText: white
+      options:
+      - optionText: 5
+        isCorrect: 1
+      - optionText: 4
+        isCorrect: 0
+      - optionText: 3
+        isCorrect: 0
+      - optionText: 2
+        isCorrect: 0
+    - questionText: orange
+      options:
+      - optionText: 6
+        isCorrect: 1
+      - optionText: 5555555555555555555555555555555555
+        isCorrect: 0
+      - optionText: 4
+        isCorrect: 0
+      - optionText: 3
+        isCorrect: 0
+    - questionText: pink
+      options:
+      - optionText: 4
+        isCorrect: 1
+      - optionText: 3
+        isCorrect: 0
+      - optionText: 5
+        isCorrect: 0
+      - optionText: 2
+        isCorrect: 0
+    - questionText: black
+      options:
+      - optionText: 5
+        isCorrect: 1
+      - optionText: 4
+        isCorrect: 0
+      - optionText: 3
+        isCorrect: 0
+      - optionText: black
+        isCorrect: 0
+    - questionText: test
+      options:
+      - optionText: y
+        isCorrect: 1
+      - optionText: n
+        isCorrect: 0
+      - optionText: n
+        isCorrect: 0
+      - optionText: n
+        isCorrect: 0
+    HighScore: 7
   popularQuizzes:
   - quizName: Mental Sums
     questions:
-    - questionText: 'Question1:        1+1 ?'
+    - questionText: 1+1 ?
       options:
       - optionText: 1
         isCorrect: 0
@@ -26,7 +129,7 @@ MonoBehaviour:
         isCorrect: 0
       - optionText: 4
         isCorrect: 0
-    - questionText: 'Question2:        1-1 ?'
+    - questionText: 1-1 ?
       options:
       - optionText: 1
         isCorrect: 0
@@ -36,7 +139,7 @@ MonoBehaviour:
         isCorrect: 0
       - optionText: 0
         isCorrect: 1
-    - questionText: 'Question3:        1x1 ?'
+    - questionText: 1x1 ?
       options:
       - optionText: 1
         isCorrect: 1
@@ -46,7 +149,7 @@ MonoBehaviour:
         isCorrect: 0
       - optionText: 0
         isCorrect: 0
-    - questionText: 'Question4:        1/1 ?'
+    - questionText: 1/1 ?
       options:
       - optionText: 3
         isCorrect: 0
@@ -56,3 +159,4 @@ MonoBehaviour:
         isCorrect: 1
       - optionText: 0
         isCorrect: 0
+    HighScore: 3
