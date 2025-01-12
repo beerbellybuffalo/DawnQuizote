@@ -44,33 +44,50 @@
     background-image: url("project://database/Assets/2D/00%20General%20UI/Yellow%20Button.png?fileID=2800000&guid=b323390645b01794b879a4c0d35851b2&type=3#Yellow Button");
     -unity-background-scale-mode: stretch-to-fill;
     -unity-font-definition: url("project://database/Assets/Fonts/Epilogue-SemiBold.ttf?fileID=12800000&guid=f86b3ff67c442bf4e9ea06e35021d7ec&type=3#Epilogue-SemiBold");
-    font-size: 50%;
     margin: 0;
-    max-width: 70%;
-    max-height: 50%;
+    max-width: none;
+    max-height: none;
     justify-content: center;
     flex-grow: 0;
     flex-shrink: 1;
     flex-basis: auto;
     align-items: center;
     align-content: center;
-    min-width: 50%;
-    min-height: auto;
+    min-width: auto;
+    min-height: 10%;
     margin-top: 1%;
     margin-right: 1%;
     margin-bottom: 1%;
     margin-left: 1%;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     border-top-width: 0;
     border-right-width: 0;
     border-bottom-width: 0;
     border-left-width: 0;
+    padding-top: 3%;
+    padding-right: 3%;
+    padding-bottom: 3%;
+    padding-left: 3%;
+    font-size: 15px;
+    overflow: visible;
 }
 
 .yellow-button:active {
     background-image: url("project://database/Assets/2D/00%20General%20UI/Yellow%20Button.png?fileID=2800000&guid=b323390645b01794b879a4c0d35851b2&type=3#Yellow Button");
     background-color: rgb(255, 255, 255);
     -unity-background-image-tint-color: rgba(255, 86, 0, 0.49);
+    font-size: 15px;
+    flex-wrap: wrap;
+    -unity-font-definition: url("project://database/Assets/Fonts/Epilogue-SemiBold.ttf?fileID=12800000&guid=f86b3ff67c442bf4e9ea06e35021d7ec&type=3#Epilogue-SemiBold");
+    margin-top: 1%;
+    margin-right: 1%;
+    margin-bottom: 1%;
+    margin-left: 1%;
+    padding-top: 3%;
+    padding-right: 3%;
+    padding-bottom: 3%;
+    padding-left: 3%;
+    min-height: 10%;
 }
 
 .red-button {
@@ -78,10 +95,10 @@
     background-image: url("project://database/Assets/2D/00%20General%20UI/Red%20Button.png?fileID=2800000&guid=e94cae9a4e841584aab0417a66f1467b&type=3#Red Button");
     -unity-background-scale-mode: stretch-to-fill;
     -unity-font-definition: url("project://database/Assets/Fonts/Epilogue-SemiBold.ttf?fileID=12800000&guid=f86b3ff67c442bf4e9ea06e35021d7ec&type=3#Epilogue-SemiBold");
-    font-size: 50%;
+    font-size: 15%;
     margin: 0;
-    max-width: 70%;
-    max-height: 50%;
+    max-width: none;
+    max-height: none;
     justify-content: center;
     flex-grow: 0;
     flex-shrink: 1;
@@ -96,6 +113,10 @@
     border-right-width: 0;
     border-bottom-width: 0;
     border-left-width: 0;
+    padding-top: 3%;
+    padding-right: 3%;
+    padding-bottom: 3%;
+    padding-left: 3%;
 }
 
 .red-button:active {
@@ -104,34 +125,80 @@
     background-color: rgb(255, 255, 255);
 }
 
-.image {
-    justify-content: center;
-    align-content: center;
-    -unity-background-scale-mode: scale-to-fit;
-}
-
-.grid-container {
-    overflow: hidden;
-}
-
 .green-button {
     background-image: url("project://database/Assets/2D/00%20General%20UI/Green%20Button.png?fileID=2800000&guid=a05967a59299f9745ad0e42805a43448&type=3#Green Button");
     background-color: rgb(255, 255, 255);
-    font-size: 50%;
+    font-size: 15%;
     -unity-font-definition: url("project://database/Assets/Fonts/Epilogue-SemiBold.ttf?fileID=12800000&guid=f86b3ff67c442bf4e9ea06e35021d7ec&type=3#Epilogue-SemiBold");
-    max-width: 70%;
-    max-height: 50%;
-    min-width: 50%;
+    max-width: none;
+    max-height: none;
+    min-width: auto;
     border-top-width: 0;
     border-right-width: 0;
     border-bottom-width: 0;
     border-left-width: 0;
 }
 
+.grid-container {
+    overflow: hidden;
+}
+
+.image {
+    justify-content: center;
+    align-content: center;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.back-button {
+    background-image: url("project://database/Assets/2D/00%20General%20UI/back_icon.png?fileID=2800000&guid=2580c73ae79ea574fbef3204450b3656&type=3#back_icon");
+}
+
 .back-button:active {
     background-color: rgb(255, 228, 112);
     background-image: url("project://database/Assets/2D/00%20General%20UI/back_icon.png?fileID=2800000&guid=2580c73ae79ea574fbef3204450b3656&type=3#back_icon");
     -unity-background-image-tint-color: rgba(255, 228, 112, 0.49);
+}
+
+.home-button {
+    background-image: url("project://database/Assets/2D/00%20General%20UI/home_icon.png?fileID=2800000&guid=8b2f8ae4984e4c84b9e4d7a4340bc53f&type=3#home_icon");
+}
+
+.home-button:active {
+    background-color: rgb(255, 228, 112);
+    background-image: url("project://database/Assets/2D/00%20General%20UI/home_icon.png?fileID=2800000&guid=8b2f8ae4984e4c84b9e4d7a4340bc53f&type=3#home_icon");
+    -unity-background-image-tint-color: rgba(255, 228, 112, 0.49);
+    opacity: 1;
+}
+
+.bar {
+    height: 100%;
+    width: 200px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    background-color: rgb(204, 77, 58);
+    align-self: flex-end;
+    overflow: visible;
+    right: 50%;
+    justify-content: center;
+    align-content: auto;
+}
+
+.text-field > .unity-text-input {
+    white-space: normal;
+    overflow: visible;
+    height: auto;
+}
+
+.unity-scroll-view__content-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
 #unity-low-button {
@@ -152,31 +219,6 @@
     justify-content: center;
     align-content: center;
     flex-wrap: wrap;
-}
-
-.unity-scroll-view__content-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
-
-.home-button:active {
-    background-color: rgb(255, 228, 112);
-    background-image: url("project://database/Assets/2D/00%20General%20UI/home_icon.png?fileID=2800000&guid=8b2f8ae4984e4c84b9e4d7a4340bc53f&type=3#home_icon");
-    -unity-background-image-tint-color: rgba(255, 228, 112, 0.49);
-    opacity: 1;
-}
-
-.home-button {
-    background-image: url("project://database/Assets/2D/00%20General%20UI/home_icon.png?fileID=2800000&guid=8b2f8ae4984e4c84b9e4d7a4340bc53f&type=3#home_icon");
-}
-
-.back-button {
-    background-image: url("project://database/Assets/2D/00%20General%20UI/back_icon.png?fileID=2800000&guid=2580c73ae79ea574fbef3204450b3656&type=3#back_icon");
 }
 
 #SFXVolumeSlider #unity-drag-container {
@@ -256,21 +298,6 @@
     align-content: flex-start;
     justify-content: flex-start;
     align-self: center;
-}
-
-.bar {
-    height: 100%;
-    width: 200px;
-    border-left-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-top-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
-    background-color: rgb(204, 77, 58);
-    align-self: flex-end;
-    overflow: visible;
-    right: 50%;
-    justify-content: center;
-    align-content: auto;
 }
 
 #MusicVolumeSlider #unity-drag-container {

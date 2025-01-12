@@ -45,6 +45,14 @@ public class MainMenuController : MonoBehaviour
     private Button LetsGoBtn;
     private Button SettingsBtn;
     private Button QuitBtn;
+
+    //settings page elements
+    private Button ResetHighScoresBtn;
+    private Button ResetHighScoresYesBtn;
+    private Button ResetHighScoresNoBtn;
+    private VisualElement ResetHighScoresConfirmation;
+    private Label ResetCompleteTextLabel;
+
     //quiz selection elements
     private Button CreateQuizBtn;
     private Button DeleteAllQuizzesBtn;
@@ -255,6 +263,17 @@ public class MainMenuController : MonoBehaviour
 
         QuitBtn = Root.Q<Button>("Quit");
         QuitBtn.clicked += OnQuitButtonClicked;
+
+        //Elements on Settings Page
+        ResetHighScoresConfirmation = settingsPage.Q<VisualElement>("ResetHighScoresConfirmation");
+        ResetCompleteTextLabel = settingsPage.Q<Label>("ResetCompleteText");
+        //Buttons on Settings Page
+        ResetHighScoresBtn = settingsPage.Q<Button>("ResetHighScores");
+        ResetHighScoresBtn.clicked += OnResetHighScoresButtonClicked;
+        ResetHighScoresYesBtn = settingsPage.Q<Button>("ResetHighScoresYes");
+        ResetHighScoresYesBtn.clicked += OnResetHighScoresYesButtonClicked;
+        ResetHighScoresNoBtn = settingsPage.Q<Button>("ResetHighScoresNo");
+        ResetHighScoresNoBtn.clicked += OnResetHighScoresNoButtonClicked;
 
         //Buttons on Quiz Selection Page
         CreateQuizBtn = Root.Q<Button>("CreateQuiz");
@@ -479,7 +498,44 @@ public class MainMenuController : MonoBehaviour
 #endif
     }
 
-    //QUIZ selection PAGE
+    //Settings Page Functions
+    private void OnResetHighScoresButtonClicked()
+    {
+        ResetHighScoresConfirmation.style.display = DisplayStyle.Flex;
+    }
+
+    private void OnResetHighScoresNoButtonClicked()
+    {
+        ResetHighScoresConfirmation.style.display = DisplayStyle.None;
+    }
+
+    private void OnResetHighScoresYesButtonClicked()
+    {
+        //popular quizzes
+        foreach (var quiz in quizManager.myQuizzesData.popularQuizzes)
+        {
+            quiz.HighScore = -1; //this is the default to indicate no high score
+        }
+        //my quizzes
+        foreach (var quiz in quizManager.myQuizzesData.quizzes)
+        {
+            quiz.HighScore = -1; //this is the default to indicate no high score
+        }
+        quizManager.SaveQuizzes();
+
+        ResetHighScoresConfirmation.style.display = DisplayStyle.None;
+        StartCoroutine(ShowHighScoreResetCompleteMessage());
+    }
+
+    private IEnumerator ShowHighScoreResetCompleteMessage()
+    {
+        //show confirmation message for 2 seconds
+        ResetCompleteTextLabel.style.display = DisplayStyle.Flex;
+        yield return new WaitForSeconds(2f);
+        ResetCompleteTextLabel.style.display = DisplayStyle.None;
+    }
+
+    //QUIZ selection Page Functions
     private void OnCreateQuizButtonClicked()
     {
         quizSelectionPage.style.display = DisplayStyle.None;
