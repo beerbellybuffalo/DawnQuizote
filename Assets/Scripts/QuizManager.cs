@@ -110,6 +110,12 @@ public class QuizManager : MonoBehaviour
         }
     }
 
+    //Retrieve a quiz by name
+    public Quiz GetQuizByName(string name, List<Quiz> quizList)
+    {
+        return quizList.Find(q => q.quizName == name);
+    }
+
     // Delete a quiz by name
     public void DeleteQuizByName(string quizName)
     {

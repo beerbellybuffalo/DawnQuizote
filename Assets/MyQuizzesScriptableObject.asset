@@ -115,7 +115,46 @@ MonoBehaviour:
         isCorrect: 0
       - optionText: n
         isCorrect: 0
-    HighScore: 7
+    HighScore: -1
+  - quizName: test1
+    questions:
+    - questionText: q1
+      options:
+      - optionText: y
+        isCorrect: 1
+      - optionText: n
+        isCorrect: 0
+      - optionText: n
+        isCorrect: 0
+      - optionText: n
+        isCorrect: 0
+    HighScore: -1
+  - quizName: test2
+    questions:
+    - questionText: q2
+      options:
+      - optionText: y
+        isCorrect: 1
+      - optionText: n
+        isCorrect: 0
+      - optionText: n
+        isCorrect: 0
+      - optionText: n
+        isCorrect: 0
+    HighScore: -1
+  - quizName: test
+    questions:
+    - questionText: q
+      options:
+      - optionText: y
+        isCorrect: 1
+      - optionText: n
+        isCorrect: 0
+      - optionText: n
+        isCorrect: 0
+      - optionText: n
+        isCorrect: 0
+    HighScore: 1
   popularQuizzes:
   - quizName: Mental Sums
     questions:

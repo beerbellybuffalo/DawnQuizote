@@ -57,10 +57,22 @@ public class MainMenuController : MonoBehaviour
     private Button CreateQuizBtn;
     private Button DeleteAllQuizzesBtn;
     private Button MentalSumsBtn;
+    private ScrollView ScrollViewMyQuizzes;
+
+    //quiz options elements
+    private Label TitleQuizNameLabel;
+    private Button PlayQuizBtn;
+    private Button EditQuizBtn;
+    private Button DeleteQuizBtn;
+
+    //delete quiz confirmation elements
+    private Button DeleteQuizConfirmBtn;
+    private Button DeleteQuizGoBackBtn;
 
     //creating quiz NAME elements
     private Button SaveQuizNameBtn;
     private TextField InputQuizNameField;
+
     //creating quiz QUESTIONS elements
     private TextField AddQuestionField;
     private TextField AddCorrectAnswerField;
@@ -70,9 +82,11 @@ public class MainMenuController : MonoBehaviour
     private Button SaveQuestionBtn;
     private Button SaveWholeQuizBtn;
     private Label NotificationText;
-    //delete all?
+
+    //delete all quizzes confirmation page elements
     private Button ConfirmDeleteAllQuizzesBtn;
     private Button GoBackBtn;
+
     //play mode page elements
     private Button PauseBtn;
     private Label QuestionTextLabel;
@@ -85,7 +99,7 @@ public class MainMenuController : MonoBehaviour
     private Label QuizNameTextLabel;
     private Label HighScoreTextLabel;
     private bool isAnswering;
-
+    
     //Question Number UI
     private VisualElement QuestionNumber;
     private VisualElement QuestionTotal;
@@ -159,6 +173,9 @@ public class MainMenuController : MonoBehaviour
     private VisualElement mainMenuPage;
     private VisualElement settingsPage;
     private VisualElement quizSelectionPage;
+    private VisualElement quizOptionsPage;
+    private VisualElement deleteQuizConfirmationPage;
+    private VisualElement quizDeletedPage;
     private VisualElement creatingQuizNamePage;
     private VisualElement creatingQuizQuestionsPage;
     private VisualElement deleteAllQuizzesConfirmationPage;
@@ -178,6 +195,9 @@ public class MainMenuController : MonoBehaviour
         mainMenuPage = Root.Q<VisualElement>("MainMenuPage");
         settingsPage = Root.Q<VisualElement>("SettingsPage");
         quizSelectionPage = Root.Q<VisualElement>("QuizSelectionPage");
+        quizOptionsPage = Root.Q<VisualElement>("QuizOptionsPage");
+        deleteQuizConfirmationPage = Root.Q<VisualElement>("DeleteQuizConfirmationPage");
+        quizDeletedPage = Root.Q<VisualElement>("QuizDeletedPage");
         creatingQuizNamePage = Root.Q<VisualElement>("CreatingQuizNamePage");
         creatingQuizQuestionsPage = Root.Q<VisualElement>("CreatingQuizQuestionsPage");
         deleteAllQuizzesConfirmationPage = Root.Q<VisualElement>("DeleteAllQuizzesConfirmationPage");
@@ -186,14 +206,6 @@ public class MainMenuController : MonoBehaviour
         pauseModePage = Root.Q<VisualElement>("PauseModePage");
         quizCompletedPage = Root.Q<VisualElement>("QuizCompletedPage");
         timesUpPage = Root.Q<VisualElement>("TimesUpPage");
-
-        // Other Visual Elements
-        Timer = Root.Q<VisualElement>("Timer");
-        QuestionNumber = playModePage.Q<VisualElement>("QuestionNumber");
-        QuestionTotal = playModePage.Q<VisualElement>("QuestionTotal");
-
-        scoreIndicator = Root.Q<VisualElement>("ScoreIndicator");
-        FinalScoreIndicator = Root.Q<VisualElement>("FinalScoreIndicator");
 
         //initialise activePage as mainMenuPage
         activePage = mainMenuPage;
@@ -241,10 +253,9 @@ public class MainMenuController : MonoBehaviour
                     StartCoroutine(EndQuizAndNavigateToPage(mainMenuPage));
                 }
                 else
-                { 
-                    activePage.style.display = DisplayStyle.None;
-                    mainMenuPage.style.display = DisplayStyle.Flex;
-                    activePage = mainMenuPage;
+                {
+                    activeQuiz = null;
+                    NavigateFromTo(activePage, mainMenuPage);
                 }
             };
         }
@@ -255,18 +266,17 @@ public class MainMenuController : MonoBehaviour
         }
 
         //Buttons on Main Menu Page
-        LetsGoBtn = Root.Q<Button>("LetsGo");
+        LetsGoBtn = mainMenuPage.Q<Button>("LetsGo");
         LetsGoBtn.clicked += OnLetsGoButtonClicked;
-
-        SettingsBtn = Root.Q<Button>("Settings");
+        SettingsBtn = mainMenuPage.Q<Button>("Settings");
         SettingsBtn.clicked += OnSettingsButtonClicked;
-
-        QuitBtn = Root.Q<Button>("Quit");
+        QuitBtn = mainMenuPage.Q<Button>("Quit");
         QuitBtn.clicked += OnQuitButtonClicked;
 
         //Elements on Settings Page
         ResetHighScoresConfirmation = settingsPage.Q<VisualElement>("ResetHighScoresConfirmation");
         ResetCompleteTextLabel = settingsPage.Q<Label>("ResetCompleteText");
+
         //Buttons on Settings Page
         ResetHighScoresBtn = settingsPage.Q<Button>("ResetHighScores");
         ResetHighScoresBtn.clicked += OnResetHighScoresButtonClicked;
@@ -275,30 +285,48 @@ public class MainMenuController : MonoBehaviour
         ResetHighScoresNoBtn = settingsPage.Q<Button>("ResetHighScoresNo");
         ResetHighScoresNoBtn.clicked += OnResetHighScoresNoButtonClicked;
 
+        //Elements on Quiz Selection Page
+        ScrollViewMyQuizzes = quizSelectionPage.Q<ScrollView>("ScrollViewMyQuizzes");
         //Buttons on Quiz Selection Page
-        CreateQuizBtn = Root.Q<Button>("CreateQuiz");
+        CreateQuizBtn = quizSelectionPage.Q<Button>("CreateQuiz");
         CreateQuizBtn.clicked += OnCreateQuizButtonClicked;
-        DeleteAllQuizzesBtn = Root.Q<Button>("DeleteAllQuizzes");
+        DeleteAllQuizzesBtn = quizSelectionPage.Q<Button>("DeleteAllQuizzes");
         DeleteAllQuizzesBtn.clicked += OnDeleteAllQuizzesButtonClicked;
-        MentalSumsBtn = Root.Q<Button>("MentalSums");
+        MentalSumsBtn = quizSelectionPage.Q<Button>("MentalSums");
         MentalSumsBtn.clicked += OnMentalSumsButtonClicked;
 
-        //Buttons on Creating Quiz Page
-        SaveQuizNameBtn = Root.Q<Button>("SaveQuizName");
+        //Elements on Quiz Options Page
+        TitleQuizNameLabel = quizOptionsPage.Q<Label>("TitleQuizName");
+        //Buttons on Quiz Options Page
+        PlayQuizBtn = quizOptionsPage.Q<Button>("PlayQuiz");
+        PlayQuizBtn.clicked += OnPlayQuizButtonClicked;
+        EditQuizBtn = quizOptionsPage.Q<Button>("EditQuiz");
+        EditQuizBtn.clicked += OnEditQuizButtonClicked;
+        DeleteQuizBtn = quizOptionsPage.Q<Button>("DeleteQuiz");
+        DeleteQuizBtn.clicked += OnDeleteQuizButtonClicked;
+
+        //Buttons on Delete Quiz Confirmation Page
+        DeleteQuizConfirmBtn = deleteQuizConfirmationPage.Q<Button>("DeleteQuizConfirm");
+        DeleteQuizConfirmBtn.clicked += OnConfirmDeleteQuizButtonClicked;
+        DeleteQuizGoBackBtn = deleteQuizConfirmationPage.Q<Button>("DeleteQuizGoBack");
+        DeleteQuizGoBackBtn.clicked += OnDeleteQuizGoBackButtonClicked;
+
+        //Buttons on Creating Quiz NAME Page
+        SaveQuizNameBtn = creatingQuizNamePage.Q<Button>("SaveQuizName");
         SaveQuizNameBtn.clicked += OnSaveQuizNameButtonClicked;
         //Text Field on Creating Quiz NAME Page
-        InputQuizNameField = Root.Q<TextField>("InputQuizNameField");
+        InputQuizNameField = creatingQuizNamePage.Q<TextField>("InputQuizNameField");
         // Force label wrapping
         InputQuizNameField.labelElement.style.whiteSpace = new StyleEnum<WhiteSpace>(WhiteSpace.Normal);
         InputQuizNameField.labelElement.style.maxHeight = new StyleLength(Length.Percent(100)); // Allow full height
         InputQuizNameField.labelElement.style.overflow = Overflow.Visible; // Ensure text is not clipped
 
         //Text Fields on Creating Quiz QUESTIONS Page
-        AddQuestionField = Root.Q<TextField>("AddQuestionField");
-        AddCorrectAnswerField = Root.Q<TextField>("AddCorrectAnswerField");
-        AddAltOption1Field = Root.Q<TextField>("AddAltOption1Field");
-        AddAltOption2Field = Root.Q<TextField>("AddAltOption2Field");
-        AddAltOption3Field = Root.Q<TextField>("AddAltOption3Field");
+        AddQuestionField = creatingQuizQuestionsPage.Q<TextField>("AddQuestionField");
+        AddCorrectAnswerField = creatingQuizQuestionsPage.Q<TextField>("AddCorrectAnswerField");
+        AddAltOption1Field = creatingQuizQuestionsPage.Q<TextField>("AddAltOption1Field");
+        AddAltOption2Field = creatingQuizQuestionsPage.Q<TextField>("AddAltOption2Field");
+        AddAltOption3Field = creatingQuizQuestionsPage.Q<TextField>("AddAltOption3Field");
 
         //register callbacks to clear these fields when the user clicks on them
         //this is so that the "Field cannot be empty" message will be cleared.
@@ -325,34 +353,36 @@ public class MainMenuController : MonoBehaviour
         });
 
         //Buttons on Creating Quiz QUESTIONS Page
-        SaveQuestionBtn = Root.Q<Button>("SaveQuestion");
+        SaveQuestionBtn = creatingQuizQuestionsPage.Q<Button>("SaveQuestion");
         SaveQuestionBtn.clicked += OnSaveQuestionButtonClicked;
-        SaveWholeQuizBtn = Root.Q<Button>("SaveWholeQuiz");
+        SaveWholeQuizBtn = creatingQuizQuestionsPage.Q<Button>("SaveWholeQuiz");
         SaveWholeQuizBtn.clicked += OnSaveWholeQuizButtonClicked;
         //Notif text
-        NotificationText = Root.Q<Label>("NotificationText");
+        NotificationText = creatingQuizQuestionsPage.Q<Label>("NotificationText");
 
         //Buttons on delete all confirmation page
-        ConfirmDeleteAllQuizzesBtn = Root.Q<Button>("DeleteAll");
+        ConfirmDeleteAllQuizzesBtn = deleteAllQuizzesConfirmationPage.Q<Button>("DeleteAll");
         ConfirmDeleteAllQuizzesBtn.clicked += OnConfirmDeleteAllQuizzesButtonClicked;
-        GoBackBtn = Root.Q<Button>("GoBack");
+        GoBackBtn = deleteAllQuizzesConfirmationPage.Q<Button>("GoBack");
         GoBackBtn.clicked += OnGoBackButtonButtonClicked;
 
         //Elements on play mode page
-        //QuizNameText
-        QuizNameTextLabel = Root.Q<Label>("QuizNameText");
-        //HighScoreText
-        HighScoreTextLabel = Root.Q<Label>("HighScoreText");
+        QuizNameTextLabel = playModePage.Q<Label>("QuizNameText");
+        HighScoreTextLabel = playModePage.Q<Label>("HighScoreText");
+        Timer = playModePage.Q<VisualElement>("Timer");
+        QuestionNumber = playModePage.Q<VisualElement>("QuestionNumber");
+        QuestionTotal = playModePage.Q<VisualElement>("QuestionTotal");
+        scoreIndicator = playModePage.Q<VisualElement>("ScoreIndicator");
         //pause button 
-        PauseBtn = Root.Q<Button>("Pause");
+        PauseBtn = playModePage.Q<Button>("Pause");
         PauseBtn.clicked += OnPauseButtonClicked;
         //question text label
-        QuestionTextLabel = Root.Q<Label>("QuestionTextPlayMode");
+        QuestionTextLabel = playModePage.Q<Label>("QuestionTextPlayMode");
         //option buttons
-        Option1Btn = Root.Q<Button>("Option1");
-        Option2Btn = Root.Q<Button>("Option2");
-        Option3Btn = Root.Q<Button>("Option3");
-        Option4Btn = Root.Q<Button>("Option4");
+        Option1Btn = playModePage.Q<Button>("Option1");
+        Option2Btn = playModePage.Q<Button>("Option2");
+        Option3Btn = playModePage.Q<Button>("Option3");
+        Option4Btn = playModePage.Q<Button>("Option4");
         OptionButtons = new() { Option1Btn , Option2Btn , Option3Btn , Option4Btn };
 
         //DEFINES LOGIC FOR ALL OF THE OPTION BUTTONS i.e. what happens when they are selected while the quiz is being played
@@ -424,19 +454,20 @@ public class MainMenuController : MonoBehaviour
         }
 
         //Buttons on pause menu
-        ResumeBtn = Root.Q<Button>("Resume");
+        ResumeBtn = pauseModePage.Q<Button>("Resume");
         ResumeBtn.clicked += OnResumeButtonClicked;
-        RestartBtn = Root.Q<Button>("Restart");
+        RestartBtn = pauseModePage.Q<Button>("Restart");
         RestartBtn.clicked += OnRestartButtonClicked;
         //ReturnToMainMenuBtn = Root.Q<Button>("ReturnToMainMenu");
         //ReturnToMainMenuBtn.clicked += OnReturnToMainMenuButtonClicked;
 
         //quiz completed page
-        TotalScoreLabel = Root.Q<Label>("TotalScoreMessage");
-        HighScoreLabel = Root.Q<Label>("HighScoreMessage");
-        TryAgainBtn = Root.Q<Button>("TryAgain");
+        FinalScoreIndicator = quizCompletedPage.Q<VisualElement>("FinalScoreIndicator");
+        TotalScoreLabel = quizCompletedPage.Q<Label>("TotalScoreMessage");
+        HighScoreLabel = quizCompletedPage.Q<Label>("HighScoreMessage");
+        TryAgainBtn = quizCompletedPage.Q<Button>("TryAgain");
         TryAgainBtn.clicked += OnTryAgainButtonClicked;
-        DoAnotherQuizBtn = Root.Q<Button>("DoAnotherQuiz");
+        DoAnotherQuizBtn = quizCompletedPage.Q<Button>("DoAnotherQuiz");
         DoAnotherQuizBtn.clicked += OnDoAnotherQuizButtonClicked;
     }
 
@@ -451,7 +482,6 @@ public class MainMenuController : MonoBehaviour
             if (activePage == creatingQuizQuestionsPage)
             { 
                 //remove it from the scroll view
-                ScrollView ScrollViewMyQuizzes = Root.Q<ScrollView>("ScrollViewMyQuizzes");
                 string quizNameToRemove = quizManager.myQuizzesData.quizzes.Last().quizName;
                 Button buttonToRemove = ScrollViewMyQuizzes.Q<Button>(quizNameToRemove);
                 if (buttonToRemove != null)
@@ -463,30 +493,40 @@ public class MainMenuController : MonoBehaviour
                 //delete the latest quiz
                 quizManager.DeleteQuizByIndex(quizManager.myQuizzesData.quizzes.Count-1);
             }
-            //clear the quiz name label and value
+            //clear the quiz name label and value on creatingQuizNamePage
             InputQuizNameField.label = string.Empty;
             InputQuizNameField.value = string.Empty;
-            activePage.style.display = DisplayStyle.None;
-            quizSelectionPage.style.display = DisplayStyle.Flex;
-            activePage = quizSelectionPage;
+            //clear the fields and notification text on creatingQuizQuestionsPage
+            AddQuestionField.value = string.Empty;
+            AddCorrectAnswerField.value = string.Empty;
+            AddAltOption1Field.value = string.Empty;
+            AddAltOption2Field.value = string.Empty;
+            AddAltOption3Field.value = string.Empty;
+            ShowNotificationText(new StyleColor(Color.black), string.Empty);
         }
+        activeQuiz = null;
+        NavigateFromTo(activePage,quizSelectionPage);
+    }
+
+    //COMMON METHOD FOR PAGE NAVIGATION
+    private void NavigateFromTo(VisualElement fromPage, VisualElement toPage)
+    {
+        fromPage.style.display = DisplayStyle.None;
+        toPage.style.display = DisplayStyle.Flex;
+        activePage = toPage;
     }
 
     //MAIN MENU PAGE
     private void OnLetsGoButtonClicked()
     {
-        mainMenuPage.style.display = DisplayStyle.None;
-        quizSelectionPage.style.display = DisplayStyle.Flex;
-        activePage = quizSelectionPage;
+        NavigateFromTo(mainMenuPage, quizSelectionPage);
 
         //temporarily make this deactivate the Root
         //gameObject.SetActive(false);
     }
     private void OnSettingsButtonClicked()
     {
-        mainMenuPage.style.display = DisplayStyle.None;
-        settingsPage.style.display = DisplayStyle.Flex;
-        activePage = settingsPage;
+        NavigateFromTo(mainMenuPage, settingsPage);
     }
     private void OnQuitButtonClicked()
     {
@@ -535,25 +575,80 @@ public class MainMenuController : MonoBehaviour
         ResetCompleteTextLabel.style.display = DisplayStyle.None;
     }
 
-    //QUIZ selection Page Functions
+    //QUIZ SELECTION Page Functions
     private void OnCreateQuizButtonClicked()
     {
-        quizSelectionPage.style.display = DisplayStyle.None;
-        creatingQuizNamePage.style.display = DisplayStyle.Flex;
-        activePage = creatingQuizNamePage;
+        NavigateFromTo(quizSelectionPage, creatingQuizNamePage);
     }
     private void OnDeleteAllQuizzesButtonClicked()
     {
-        quizSelectionPage.style.display = DisplayStyle.None;
-        deleteAllQuizzesConfirmationPage.style.display = DisplayStyle.Flex;
-        activePage = deleteAllQuizzesConfirmationPage;
+        NavigateFromTo(quizSelectionPage, deleteAllQuizzesConfirmationPage);
     }
     private void OnMentalSumsButtonClicked()
     {
-        StartCoroutine(PlayQuiz(MentalSumsBtn.text));
+        //set active quiz to Mental Sums
+        List<Quiz> popularQuizzes = quizManager.myQuizzesData.popularQuizzes;
+        activeQuiz = quizManager.GetQuizByName("Mental Sums", popularQuizzes);
+
+        //disable the edit and delete buttons on the quiz options page since mental sums quiz is for demo and should be immutable
+        EditQuizBtn.SetEnabled(false);
+        DeleteQuizBtn.SetEnabled(false);
+
+        //set quiz name label to mental sums
+        TitleQuizNameLabel.text = activeQuiz.quizName;
+
+        NavigateFromTo(activePage, quizOptionsPage);
     }
 
-    //CREATING QUIZ NAME PAGE
+    //QUIZ OPTIONS Page Functions
+    private void OnPlayQuizButtonClicked()
+    {
+        StartCoroutine(PlayQuiz(activeQuiz.quizName));
+
+        //to account for the case where it's mental sums
+        EditQuizBtn.SetEnabled(true);
+        DeleteQuizBtn.SetEnabled(true);
+    }
+    private void OnEditQuizButtonClicked()
+    {
+        
+    }
+    private void OnDeleteQuizButtonClicked()
+    {
+        //navigate to Delete Quiz Confirmation Page
+        NavigateFromTo(activePage, deleteQuizConfirmationPage);
+    }
+
+    private void OnConfirmDeleteQuizButtonClicked()
+    {
+        string nameOfButtonToDelete = activeQuiz.quizName.Replace(" ", "");
+        //remove that quiz's button from the quiz selection page
+        Button buttonToRemove = ScrollViewMyQuizzes.Q<Button>(nameOfButtonToDelete);
+        ScrollViewMyQuizzes.Remove(buttonToRemove);
+        //delete the quiz
+        quizManager.DeleteQuizByName(activeQuiz.quizName);
+        activeQuiz = null;
+        quizManager.SaveQuizzes();
+        //reset UI quiz name on quiz options page
+        TitleQuizNameLabel.text = "Quiz Name Here";
+        StartCoroutine(ShowQuizDeletedMessage());
+    }
+
+    private void OnDeleteQuizGoBackButtonClicked()
+    {
+        //hide the Delete Quiz Confirmation Page, show quiz options page
+        NavigateFromTo(activePage, quizOptionsPage);
+    }
+
+    private IEnumerator ShowQuizDeletedMessage()
+    {
+        NavigateFromTo(activePage, quizDeletedPage);
+        yield return new WaitForSeconds(2f);
+        //navigate back to the quiz selection page
+        NavigateFromTo(activePage, quizSelectionPage);
+    }
+
+    //CREATING QUIZ NAME Page Functions
     private void OnSaveQuizNameButtonClicked()
     {
         if (quizManager.AddQuiz(InputQuizNameField, InputQuizNameField.value))
@@ -562,45 +657,30 @@ public class MainMenuController : MonoBehaviour
             InputQuizNameField.label = string.Empty;
             InputQuizNameField.value = string.Empty;
             //GO TO THE NEXT PAGE TO CREATE QUIZ QUESTIONS
-            creatingQuizNamePage.style.display = DisplayStyle.None;
-            creatingQuizQuestionsPage.style.display = DisplayStyle.Flex;
-            activePage = creatingQuizQuestionsPage;
+            NavigateFromTo(creatingQuizNamePage, creatingQuizQuestionsPage);
         };
-    }
-
-    public void ClearMyQuizzesScrollView()
-    {
-        ScrollView ScrollViewMyQuizzes = Root.Q<ScrollView>("ScrollViewMyQuizzes");
-        //Find all buttons in ScrollView
-        var Buttons = ScrollViewMyQuizzes.Query<Button>().ToList();
-        foreach (var button in Buttons)
-        {
-            ScrollViewMyQuizzes.Remove(button);
-            Debug.LogWarning($"button removed: {button.text}");
-        }
-        //// Find all buttons with the .yellow-button class inside the ScrollView
-        //var yellowButtons = ScrollViewMyQuizzes.Query<Button>(".yellow-button").ToList();
-
-        //// Remove each yellow button from the ScrollView
-        //foreach (var button in yellowButtons)
-        //{
-        //    ScrollViewMyQuizzes.Remove(button);
-        //    Debug.LogWarning($"button removed: {button.text}");
-        //}
-        //Debug.Log("Cleared all yellow buttons from scroll view!");
-        ////force redraw of UI
-        //ScrollViewMyQuizzes.MarkDirtyRepaint();
-
     }
 
     public void CreateButtonInMyQuizzes(string name)
     {
-        ScrollView ScrollViewMyQuizzes = Root.Q<ScrollView>("ScrollViewMyQuizzes");
         Button newQuizButton = new Button();
         newQuizButton.text = name;
-        newQuizButton.name = name;
-        newQuizButton.AddToClassList("yellow-button");
-        newQuizButton.clicked += () => StartCoroutine(PlayQuiz(name));
+        //newQuizButton.name = name;
+        newQuizButton.name = name.Replace(" ", ""); // Removes spaces
+        //newQuizButton.AddToClassList("yellow-button");
+        newQuizButton.AddToClassList("myquizzes-button"); //sets max width
+        newQuizButton.clicked += () => {
+            //set active quiz to the one whose button was pressed
+            List<Quiz> myQuizzes = quizManager.myQuizzesData.quizzes;
+            activeQuiz = quizManager.GetQuizByName(newQuizButton.text, myQuizzes);
+            //update the quiz name title on quiz options page
+            TitleQuizNameLabel.text = name;
+            //enable edit and delete buttons
+            EditQuizBtn.SetEnabled(true);
+            DeleteQuizBtn.SetEnabled(true);
+            //navigate to quiz options page
+            NavigateFromTo(activePage, quizOptionsPage);
+        };
         ScrollViewMyQuizzes.Add(newQuizButton);
     }
 
@@ -669,9 +749,7 @@ public class MainMenuController : MonoBehaviour
         //quizManager.LoadQuizzes();
         yield return new WaitForSeconds(2f);
         //navigate to quiz selection page
-        creatingQuizQuestionsPage.style.display = DisplayStyle.None;
-        quizSelectionPage.style.display = DisplayStyle.Flex;
-        activePage = quizSelectionPage;
+        NavigateFromTo(creatingQuizQuestionsPage, quizSelectionPage);
     }
 
     //CONFIRM DELETE ALL PAGE
@@ -682,25 +760,30 @@ public class MainMenuController : MonoBehaviour
         //delete from persistent storage as well
         quizManager.SaveQuizzes();
         //navigate to the confirmation message page and display for 2 seconds before going back to quiz selection
-        StartCoroutine(DisplayAllDeleted());
+        StartCoroutine(ShowAllDeletedMessage());
     }
 
-    private IEnumerator DisplayAllDeleted()
-    { 
-        activePage.style.display = DisplayStyle.None;
-        allQuizzesDeletedPage.style.display = DisplayStyle.Flex;
-        activePage = allQuizzesDeletedPage;
+    public void ClearMyQuizzesScrollView()
+    {
+        //Find all buttons in ScrollView and remove them
+        var Buttons = ScrollViewMyQuizzes.Query<Button>().ToList();
+        foreach (var button in Buttons)
+        {
+            ScrollViewMyQuizzes.Remove(button);
+            Debug.LogWarning($"button removed: {button.text}");
+        }
+    }
+
+    private IEnumerator ShowAllDeletedMessage()
+    {
+        NavigateFromTo(activePage, allQuizzesDeletedPage);
         yield return new WaitForSeconds(2f);
-        activePage.style.display = DisplayStyle.None;
-        quizSelectionPage.style.display = DisplayStyle.Flex;
-        activePage = quizSelectionPage;
+        NavigateFromTo(activePage, quizSelectionPage);
     }
 
     private void OnGoBackButtonButtonClicked()
     {
-        activePage.style.display = DisplayStyle.None;
-        quizSelectionPage.style.display = DisplayStyle.Flex;
-        activePage = quizSelectionPage;
+        NavigateFromTo(activePage, quizSelectionPage);
     }
 
     //PLAY MODE PAGE
@@ -737,9 +820,7 @@ public class MainMenuController : MonoBehaviour
     private IEnumerator PlayQuiz(string _quizName)
     {
         //change to play mode page
-        activePage.style.display = DisplayStyle.None;
-        playModePage.style.display = DisplayStyle.Flex;
-        activePage = playModePage;
+        NavigateFromTo(activePage, playModePage);
         //switch from main menu bgm to quiz bgm
         audioManager.PlayMusic("Quiz bgm");
         //set active quiz
@@ -747,14 +828,14 @@ public class MainMenuController : MonoBehaviour
         {
             //get reference to mental sums quiz
             List<Quiz> popularQuizzes = quizManager.myQuizzesData.popularQuizzes;
-            Quiz MentalSumsQuiz = quizManager.myQuizzesData.GetQuizByName("Mental Sums", popularQuizzes);
+            Quiz MentalSumsQuiz = quizManager.GetQuizByName("Mental Sums", popularQuizzes);
             activeQuiz = MentalSumsQuiz;
         }
         else
         {
             //search for quiz from My Quizzes and set the active quiz
             List<Quiz> myQuizzes = quizManager.myQuizzesData.quizzes;
-            activeQuiz = quizManager.myQuizzesData.GetQuizByName(_quizName, myQuizzes);
+            activeQuiz = quizManager.GetQuizByName(_quizName, myQuizzes);
         }
         Debug.Log("Updating UI and starting quiz!");
         //update QuizNameText and HighScoreText
@@ -785,9 +866,7 @@ public class MainMenuController : MonoBehaviour
     {
         yield return StartCoroutine(EndQuizAndResetUI());
         //navigate to specified page
-        activePage.style.display = DisplayStyle.None;
-        pageToNavigateTo.style.display = DisplayStyle.Flex;
-        activePage = pageToNavigateTo;
+        NavigateFromTo(activePage, pageToNavigateTo);
 
         if (pageToNavigateTo == playModePage)
         {
@@ -848,9 +927,7 @@ public class MainMenuController : MonoBehaviour
         FinalScoreIndicator.style.backgroundImage = new StyleBackground(scoreIndicator.style.backgroundImage.value);
 
         //navigate to quiz completed page
-        activePage.style.display = DisplayStyle.None; //hide play mode screen
-        quizCompletedPage.style.display = DisplayStyle.Flex;
-        activePage = quizCompletedPage;
+        NavigateFromTo(activePage, quizCompletedPage);
 
         //save quizzes so that highscores are persistent
         quizManager.SaveQuizzes();
@@ -1089,13 +1166,9 @@ public class MainMenuController : MonoBehaviour
 
     IEnumerator ShowTimesUpScreen()
     {
-        activePage.style.display = DisplayStyle.None;
-        timesUpPage.style.display = DisplayStyle.Flex;
-        activePage = timesUpPage;
+        NavigateFromTo(activePage, timesUpPage);
         yield return StartCoroutine(PlayTimesUpSound());
-        activePage.style.display = DisplayStyle.None;
-        playModePage.style.display = DisplayStyle.Flex;
-        activePage = playModePage;
+        NavigateFromTo(activePage, playModePage);
     }
 
     IEnumerator PlayTimesUpSound()
@@ -1175,4 +1248,3 @@ public class MainMenuController : MonoBehaviour
         StartCoroutine(EndQuizAndNavigateToPage(quizSelectionPage));
     }
 }
-

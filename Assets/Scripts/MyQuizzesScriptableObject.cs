@@ -56,11 +56,6 @@ public class MyQuizzesScriptableObject : ScriptableObject
     //This is for Popular Quizzes
     public List<Quiz> popularQuizzes = new List<Quiz>();
 
-    public Quiz GetQuizByName(string name, List<Quiz> quizList)
-    {
-        return quizList.Find(q => q.quizName == name);
-    }
-
     private void OnValidate()
     {
         foreach (var quiz in quizzes)
