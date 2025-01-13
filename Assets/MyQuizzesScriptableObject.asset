@@ -79,11 +79,11 @@ MonoBehaviour:
       options:
       - optionText: 6
         isCorrect: 1
-      - optionText: 5555555555555555555555555555555555
-        isCorrect: 0
       - optionText: 4
         isCorrect: 0
       - optionText: 3
+        isCorrect: 0
+      - optionText: 5555555
         isCorrect: 0
     - questionText: pink
       options:
@@ -116,32 +116,6 @@ MonoBehaviour:
       - optionText: n
         isCorrect: 0
     HighScore: -1
-  - quizName: test1
-    questions:
-    - questionText: q1
-      options:
-      - optionText: y
-        isCorrect: 1
-      - optionText: n
-        isCorrect: 0
-      - optionText: n
-        isCorrect: 0
-      - optionText: n
-        isCorrect: 0
-    HighScore: -1
-  - quizName: test2
-    questions:
-    - questionText: q2
-      options:
-      - optionText: y
-        isCorrect: 1
-      - optionText: n
-        isCorrect: 0
-      - optionText: n
-        isCorrect: 0
-      - optionText: n
-        isCorrect: 0
-    HighScore: -1
   - quizName: test
     questions:
     - questionText: q
@@ -154,7 +128,7 @@ MonoBehaviour:
         isCorrect: 0
       - optionText: n
         isCorrect: 0
-    HighScore: 1
+    HighScore: -1
   popularQuizzes:
   - quizName: Mental Sums
     questions:
@@ -198,4 +172,4 @@ MonoBehaviour:
         isCorrect: 1
       - optionText: 0
         isCorrect: 0
-    HighScore: 3
+    HighScore: -1

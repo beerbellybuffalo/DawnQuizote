@@ -166,6 +166,7 @@ public class MainMenuController : MonoBehaviour
     private Button TryAgainBtn;
     private Button DoAnotherQuizBtn;
     private int TotalScore;
+    private int remainingSeconds;
 
     //PAGES
     private VisualElement activePage; //the page that is currently active
@@ -213,6 +214,7 @@ public class MainMenuController : MonoBehaviour
         //init variables for Play mode
         isAnswering = false;
         TotalScore = 0;
+        remainingSeconds = 0;
     }
     private void OnEnable()
     {
@@ -406,7 +408,7 @@ public class MainMenuController : MonoBehaviour
                     // play flip animation and flip sound
                     runnerAnimator.SetTrigger("Flip");
                     
-                    TotalScore++; //increment total score
+                    TotalScore += remainingSeconds; //increment total score according to remaining seconds
                     //update the score indicator i.e. the silhouette of Dawn becomes more green
                     UpdateScoreIndicator(TotalScore);
 
@@ -675,8 +677,8 @@ public class MainMenuController : MonoBehaviour
             activeQuiz = quizManager.GetQuizByName(newQuizButton.text, myQuizzes);
             //update the quiz name title on quiz options page
             TitleQuizNameLabel.text = name;
-            //enable edit and delete buttons
-            EditQuizBtn.SetEnabled(true);
+            //enable delete, edit should be disabled until implemented
+            EditQuizBtn.SetEnabled(false);
             DeleteQuizBtn.SetEnabled(true);
             //navigate to quiz options page
             NavigateFromTo(activePage, quizOptionsPage);
@@ -748,6 +750,7 @@ public class MainMenuController : MonoBehaviour
         CreateButtonInMyQuizzes(latestQuiz.quizName);
         //quizManager.LoadQuizzes();
         yield return new WaitForSeconds(2f);
+        ShowNotificationText(new StyleColor(Color.black), string.Empty);
         //navigate to quiz selection page
         NavigateFromTo(creatingQuizQuestionsPage, quizSelectionPage);
     }
@@ -921,7 +924,7 @@ public class MainMenuController : MonoBehaviour
         }
 
         //Update the text label in quiz completed page to show total score and high score
-        TotalScoreLabel.text = $"You scored {TotalScore}/{completedQuiz.questions.Count} on '{completedQuiz.quizName}'.";
+        TotalScoreLabel.text = $"You scored {TotalScore}/{completedQuiz.questions.Count*10} on '{completedQuiz.quizName}'.";
         HighScoreLabel.text = $"High Score: {completedQuiz.HighScore}";
         //Update the final score indicator to reflect the score
         FinalScoreIndicator.style.backgroundImage = new StyleBackground(scoreIndicator.style.backgroundImage.value);
@@ -1089,7 +1092,7 @@ public class MainMenuController : MonoBehaviour
         while (elapsed < timeout && isAnswering && activeQuiz!=null)
         {
             //Calculate remaining seconds and update UI if needed
-            int remainingSeconds = (int) Math.Ceiling(timeout - elapsed);
+            remainingSeconds = (int) Math.Ceiling(timeout - elapsed);
             if (remainingSeconds < lastSecond)
             {
                 //update UI with remainingSeconds
