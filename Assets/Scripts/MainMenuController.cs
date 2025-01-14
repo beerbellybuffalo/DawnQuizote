@@ -1041,7 +1041,7 @@ public class MainMenuController : MonoBehaviour
 
         private void UpdateScoreIndicator(int score)
     {
-        int percentToIndicate = (int)(100*score / activeQuiz.questions.Count); //truncated number
+        int percentToIndicate = (int)(100*score / (activeQuiz.questions.Count*10)); //truncated number
         //Debug.Log($"score: {score}");
         //Debug.Log($"total questions: {activeQuiz.questions.Count}");
         //Debug.Log($"{percentToIndicate} percent on indicator");
