@@ -860,7 +860,11 @@ public class MainMenuController : MonoBehaviour
         }
 
         if (activeQuiz != null)
-        { 
+        {
+            //Quiz is completed. Stop env movement, cue end animation and show quizCompletedPage
+            //PauseEnvMovement();
+            runnerAnimator.SetTrigger("Victory");
+            StartCoroutine(SmoothTransitionEnvMovementCoroutine(4.0f,0f));
             StartCoroutine(ShowQuizComplete(activeQuiz));
         } 
     }
@@ -870,9 +874,12 @@ public class MainMenuController : MonoBehaviour
         yield return StartCoroutine(EndQuizAndResetUI());
         //navigate to specified page
         NavigateFromTo(activePage, pageToNavigateTo);
-
+        yield return StartCoroutine(WaitForAnimationToComplete()); // wait for turning to complete first
+        runnerAnimator.SetTrigger("Running");
+        StartCoroutine(SmoothTransitionEnvMovementCoroutine(0f, 4.0f));
         if (pageToNavigateTo == playModePage)
         {
+            //ResumeEnvMovement();
             yield return StartCoroutine(PlayQuiz(previousQuiz.quizName));
         }
         else
@@ -1186,9 +1193,9 @@ public class MainMenuController : MonoBehaviour
     IEnumerator WaitForAnimationToComplete()
     {
         //all the checks for "activeQuiz" are to account for when the restart button is pressed mid-animation
-        
         int runningStateHash = Animator.StringToHash("Running");
-        int stumbleStateHash = Animator.StringToHash("Stumble Shortened");
+        int stumbleStateHash = Animator.StringToHash("StumbleShortened");
+        int turningStateHash = Animator.StringToHash("HappyRightTurn");
         AnimatorStateInfo animationStateInfo;
 
         // Wait for the animation to transition out of the "Running" state, since it may not be instantaneous
@@ -1201,7 +1208,7 @@ public class MainMenuController : MonoBehaviour
 
         //check if the animation state is "Stumble Shortened", and if so then pause the env movement
         animationStateInfo = runnerAnimator.GetCurrentAnimatorStateInfo(0);
-        if (activeQuiz != null && animationStateInfo.shortNameHash == stumbleStateHash)
+        if (activeQuiz != null && (animationStateInfo.shortNameHash == stumbleStateHash || animationStateInfo.shortNameHash == turningStateHash))
         {
             PauseEnvMovement();
         }
@@ -1212,7 +1219,7 @@ public class MainMenuController : MonoBehaviour
             if (activeQuiz == null) yield break;
             animationStateInfo = runnerAnimator.GetCurrentAnimatorStateInfo(0);
             yield return null;
-        } while (animationStateInfo.shortNameHash != runningStateHash);
+        } while (animationStateInfo.shortNameHash != runningStateHash && animationStateInfo.normalizedTime < 1.0f);
 
         if (activeQuiz != null)
         { 
@@ -1227,7 +1234,7 @@ public class MainMenuController : MonoBehaviour
         foreach (var prefab in RoadPrefabs)
         {
             //set the speed to 0
-            prefab.GetComponent<RoadHandler>().Speed = 0;
+            prefab.GetComponent<RoadHandler>().Speed = 0f;
         }
     }
 
@@ -1237,13 +1244,55 @@ public class MainMenuController : MonoBehaviour
         foreach (var prefab in RoadPrefabs)
         {
             //set the speed back to 4
-            prefab.GetComponent<RoadHandler>().Speed = 4;
+            prefab.GetComponent<RoadHandler>().Speed = 4.0f;
+        }
+    }
+
+    private IEnumerator SmoothTransitionEnvMovementCoroutine(float startSpeed, float targetSpeed)
+    {
+        // Wait until a transition starts
+        while (runnerAnimator.GetAnimatorTransitionInfo(0).nameHash == 0)
+        {
+            yield return null; // Wait for the next frame
+        }
+        Debug.Log($"ANIMATION TRANSITION: {runnerAnimator.GetAnimatorTransitionInfo(0).nameHash}");
+        
+        float duration = runnerAnimator.GetAnimatorTransitionInfo(0).duration;
+        Debug.Log($"Duration of transition: {duration}");
+        float startTime = Time.time;
+        float elapsedTime = 0f;
+        RoadPrefabs = GameObject.FindGameObjectsWithTag("RoadPrefabs");
+
+        while (elapsedTime < duration)
+        {
+            // Calculate the fraction of the total duration that has passed
+            float t = elapsedTime / duration;
+            foreach (var prefab in RoadPrefabs)
+            {
+                if (prefab != null)
+                { 
+                    prefab.GetComponent<RoadHandler>().Speed = Mathf.SmoothStep(startSpeed, targetSpeed, t);
+                }
+            }
+            elapsedTime = Time.time - startTime;
+            //wait for next frame
+            yield return null;
+
+            //ensure exact target speed achieved
+            foreach (var prefab in RoadPrefabs)
+            {
+                if (prefab != null)
+                { 
+                    prefab.GetComponent<RoadHandler>().Speed = targetSpeed;
+                }
+            }
         }
     }
 
     //QUIZ COMPLETED PAGE
     private void OnTryAgainButtonClicked()
     {
+        runnerAnimator.SetTrigger("HappyRightTurn");
         StartCoroutine(EndQuizAndNavigateToPage(playModePage));
     }
     private void OnDoAnotherQuizButtonClicked()

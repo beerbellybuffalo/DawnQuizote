@@ -7,7 +7,7 @@ public class RoadHandler : MonoBehaviour
 {
     public GameObject roadPrefab; // Prefab of the road section
     private GameObject currentRoadSection; // Reference to the current road section
-    public int Speed = 4;
+    public float Speed = 4.0f;
 
     void Start()
     {
