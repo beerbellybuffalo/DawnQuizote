@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 /*This script is to be attached to road prefabs*/
@@ -7,6 +8,7 @@ public class RoadHandler : MonoBehaviour
 {
     public GameObject roadPrefab; // Prefab of the road section
     private GameObject currentRoadSection; // Reference to the current road section
+    private bool isColliding;
     public float Speed = 4.0f;
 
     void Start()
@@ -43,10 +45,20 @@ public class RoadHandler : MonoBehaviour
         // Check if the player passes through the current road section's trigger
         if (other.CompareTag("Player"))
         {
+            //if (isColliding) return;
+            //isColliding = true;
             Debug.Log("Instantiating New Section!");
             SpawnNextRoad();
+            //StartCoroutine(ResetCollisionCheck());
         }
     }
+
+    //IEnumerator ResetCollisionCheck()
+    //{
+    //    yield return new WaitForEndOfFrame();
+    //    isColliding = false;
+    //}
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
