@@ -1,17 +1,17 @@
-# Dawn Quizote: Submission for Epyphite Corp Take Home Assignment
+# Dawn Quizote: a Quiz App and Parkour Runner hybrid
 
-## Assignment Brief / Problem Statement
-The demand for engaging and interactive learning tools is increasing, especially on mobile platforms where accessibility and usability are critical. Traditional quiz applications often lack immersive and engaging elements, making it challenging to maintain user interest and motivation. Leveraging Unity 3D to create a visually appealing and gamified quiz application for mobile can address this need.
-
-To enhance the experience further, integrating Augmented Reality (AR) can provide a novel and engaging way for users to interact with quiz content in their environment, promoting a deeper connection with the material. However, AR is optional, as a well-designed standard mobile quiz app with interactive features, animations, and gamified elements can still achieve the goal of improving user engagement and retention.
+## Assignment Brief / Problem Statement (originally a take-home Unity Technical Assessment)
+> The demand for engaging and interactive learning tools is increasing, especially on mobile platforms where accessibility and usability are critical. Traditional quiz applications often lack immersive and engaging elements, making it challenging to maintain user interest and motivation. Leveraging Unity 3D to create a visually appealing and gamified quiz application for mobile can address this need.
+>
+> To enhance the experience further, integrating Augmented Reality (AR) can provide a novel and engaging way for users to interact with quiz content in their environment, promoting a deeper connection with the material. However, AR is optional, as a well-designed standard mobile quiz app with interactive features, animations, and gamified elements can still achieve the goal of improving user engagement and retention.
 
 ### The key challenges include:
-> Designing an intuitive, visually appealing user interface for mobile devices.
-> Ensuring smooth performance across various mobile platforms (iOS and Android).
-> Providing a flexible system to add, update, and manage quiz questions and categories.
-> Optionally, implementing AR features to enhance immersion without overwhelming development resources.
-> Ensuring the app is scalable, lightweight, and user-friendly for a broad audience.
-> The solution should balance functionality, interactivity, and performance, aiming to create a quiz application that is engaging, accessible, and enjoyable to use.
+> - Designing an intuitive, visually appealing user interface for mobile devices
+> - Ensuring smooth performance across various mobile platforms (iOS and Android)
+> - Providing a flexible system to add, update, and manage quiz questions and categories
+> - Optionally, implementing AR features to enhance immersion without overwhelming development resources
+> - Ensuring the app is scalable, lightweight, and user-friendly for a broad audience
+> - The solution should balance functionality, interactivity, and performance, aiming to create a quiz application that is engaging, accessible, and enjoyable to use
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## About my Submission
 Dawn Quizote is a parkour enthusiast and Pop Quiz aficionado. Help her get good at both in this gamified quiz app that combines subway surfer with a traditional quiz app like QuizUp or Kahoot!
@@ -34,25 +34,22 @@ When the player selects a quiz, they will begin a parkour sequence which will co
 
 The correct answer to each question must be provided within a specified time limit (10s per question by default), for the runner to clear the obstacle parkour-style. Each correct answer will add to a total score, with quicker answers being rewarded with more points. Otherwise, if an incorrect answer is given or they have run out of time, they will stumble/collide with the obstacle and not receive any points for the question. At the end, the player will be shown their final score.
 
-```diff
-! **You may try out the Mental Sums quiz under Popular Quizzes to see the gameplay, or add your own quiz by clicking on Create New Quiz**
-```
+> [!NOTE]
+> **You may try out the `Mental Sums` quiz under `Popular Quizzes` to see the gameplay, or add your own quiz by clicking on `Create New Quiz`**
 
 ## Features as of v1.0.5
-✔️ = Completed  
-⌛ = In Progress  
 ### Quiz-related
-(*required in brief) 1. Flexible system to add, update, and manage quiz questions and categories  
-✔️Browse Existing Quizzes  
-✔️Create New Quiz  
-✔️Delete All Quizzes  
-✔️Delete Single Quiz  
-⌛Edit Single Quiz  
+(**required in brief**) Flexible system to add, update, and manage quiz questions and categories  
+- [X] Browse Existing Quizzes  
+- [X] Create New Quiz  
+- [X] Delete All Quizzes  
+- [X] Delete Single Quiz  
+- [ ] Edit Single Quiz  
 ### General
-✔️Quiz Main Gameplay  
-✔️Pause App  
-✔️Quit App  
-✔️High Score Indicator per quiz so the player can track if they have improved  
-✔️Menu Settings to adjust music and sfx  
-✔️Parkour Animations  
-✔️Countdown Timer UI  
+- [X] Quiz Main Gameplay  
+- [X] Pause App  
+- [X] Quit App  
+- [X] High Score Indicator per quiz so the player can track if they have improved  
+- [X] Menu Settings to adjust music and sfx  
+- [X] Parkour Animations  
+- [X] Countdown Timer UI  
