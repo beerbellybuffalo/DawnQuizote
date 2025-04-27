@@ -21,9 +21,6 @@ public class MainMenuController : MonoBehaviour
 
     public Animator runnerAnimator;
 
-    //for storing animation state names
-    private static Dictionary<int, string> animStateHashToName;
-
     //store all active instances of road prefabs for pausing movement
     private GameObject[] RoadPrefabs;
 
@@ -218,29 +215,6 @@ public class MainMenuController : MonoBehaviour
     }
     private void OnEnable()
     {
-        //save references to all animation states for later use
-        //create a dictionary to store these state names
-        animStateHashToName = new Dictionary<int, string>();
-        //var controller = runnerAnimator.runtimeAnimatorController as AnimatorController;
-        //if (controller == null)
-        //{
-        //    Debug.LogError("Animator Controller not found!");
-        //    return;
-        //}
-
-        //foreach (var layer in controller.layers)
-        //{
-        //    //Debug.Log($"Layer: {layer.name}");
-        //    foreach (var state in layer.stateMachine.states)
-        //    {
-        //        //Debug.Log($"  State: {state.state.name}");
-        //        //store state name in dictionary
-        //        var name = state.state.name;
-        //        var nameAsHash = runnerAnimator.StringToHash(name);
-        //        animStateHashToName.Add(nameAsHash,name);
-        //    }
-        //}
-
         //Common Buttons on Multiple Pages, e.g. home
         homeButtons = Root.Query<Button>("Home").ToList();
         foreach (var homeButton in homeButtons)
@@ -402,24 +376,18 @@ public class MainMenuController : MonoBehaviour
 
                 if (optionButton.text == correctOption)
                 {
-                    //Debug.LogWarning("Correct Answer Selected!");
                     // play correct answer sound
                     audioManager.PlaySFX("Correct Answer");
                     // play flip animation and flip sound
                     runnerAnimator.SetTrigger("Flip");
                     
-                    TotalScore += remainingSeconds; //increment total score according to remaining seconds
+                    TotalScore += remainingSeconds;
                     //update the score indicator i.e. the silhouette of Dawn becomes more green
                     UpdateScoreIndicator(TotalScore);
 
                     //set the option colour to GREEN
                     try
                     {
-                        //optionButton.style.backgroundImage = null;
-                        //optionButton.style.backgroundImage = new StyleBackground(GreenButtonTexture);
-                        //Debug.LogWarning($"Style set to: {optionButton.style.backgroundImage}");
-
-                        //TEMPORARILY CHANGE THE TEXT COLOUR INSTEAD
                         optionButton.style.color = Color.green;
                     }
                     catch (Exception e)
@@ -430,7 +398,6 @@ public class MainMenuController : MonoBehaviour
                 }
                 else
                 {
-                    //Debug.LogWarning("Wrong Answer Selected!");
                     // play wrong answer sound
                     audioManager.PlaySFX("Wrong Answer");
                     //play stumble animation and stumble sound
@@ -439,11 +406,6 @@ public class MainMenuController : MonoBehaviour
                     //set the option colour to RED
                     try
                     {
-                        //optionButton.style.backgroundImage = null;
-                        //optionButton.style.backgroundImage = new StyleBackground(RedButtonTexture);
-                        //Debug.LogWarning($"Style set to: {optionButton.style.backgroundImage}");
-
-                        //TEMPORARILY CHANGE THE TEXT COLOUR INSTEAD
                         optionButton.style.color = Color.red;
                     }
                     catch (Exception e)
@@ -460,8 +422,6 @@ public class MainMenuController : MonoBehaviour
         ResumeBtn.clicked += OnResumeButtonClicked;
         RestartBtn = pauseModePage.Q<Button>("Restart");
         RestartBtn.clicked += OnRestartButtonClicked;
-        //ReturnToMainMenuBtn = Root.Q<Button>("ReturnToMainMenu");
-        //ReturnToMainMenuBtn.clicked += OnReturnToMainMenuButtonClicked;
 
         //quiz completed page
         FinalScoreIndicator = quizCompletedPage.Q<VisualElement>("FinalScoreIndicator");
@@ -522,9 +482,6 @@ public class MainMenuController : MonoBehaviour
     private void OnLetsGoButtonClicked()
     {
         NavigateFromTo(mainMenuPage, quizSelectionPage);
-
-        //temporarily make this deactivate the Root
-        //gameObject.SetActive(false);
     }
     private void OnSettingsButtonClicked()
     {
@@ -667,9 +624,7 @@ public class MainMenuController : MonoBehaviour
     {
         Button newQuizButton = new Button();
         newQuizButton.text = name;
-        //newQuizButton.name = name;
         newQuizButton.name = name.Replace(" ", ""); // Removes spaces
-        //newQuizButton.AddToClassList("yellow-button");
         newQuizButton.AddToClassList("myquizzes-button"); //sets max width
         newQuizButton.clicked += () => {
             //set active quiz to the one whose button was pressed
@@ -815,10 +770,6 @@ public class MainMenuController : MonoBehaviour
         //ADD LOGIC HERE FOR STARTING FROM BEGINNING OF THE QUIZ
         StartCoroutine(EndQuizAndNavigateToPage(playModePage));
     }
-    //private void OnReturnToMainMenuButtonClicked()
-    //{ 
-    //same as home buttons
-    //}
 
     private IEnumerator PlayQuiz(string _quizName)
     {
@@ -862,7 +813,6 @@ public class MainMenuController : MonoBehaviour
         if (activeQuiz != null)
         {
             //Quiz is completed. Stop env movement, cue end animation and show quizCompletedPage
-            //PauseEnvMovement();
             runnerAnimator.SetTrigger("Victory");
             StartCoroutine(SmoothTransitionEnvMovementCoroutine(4.0f,0f));
             StartCoroutine(ShowQuizComplete(activeQuiz));
@@ -879,7 +829,6 @@ public class MainMenuController : MonoBehaviour
         StartCoroutine(SmoothTransitionEnvMovementCoroutine(0f, 4.0f));
         if (pageToNavigateTo == playModePage)
         {
-            //ResumeEnvMovement();
             yield return StartCoroutine(PlayQuiz(previousQuiz.quizName));
         }
         else
@@ -899,9 +848,6 @@ public class MainMenuController : MonoBehaviour
         //Reset button colors for the next question
         foreach (var optionButton in OptionButtons)
         {
-            //optionButton.style.backgroundImage = new StyleBackground(YellowButtonTexture);
-
-            //FOR NOW, RESET THE BUTTON TEXT TO BLACK AND EMPTY
             optionButton.style.color = Color.black;
             optionButton.text = string.Empty;
         }
@@ -1049,9 +995,6 @@ public class MainMenuController : MonoBehaviour
         private void UpdateScoreIndicator(int score)
     {
         int percentToIndicate = (int)(100*score / (activeQuiz.questions.Count*10)); //truncated number
-        //Debug.Log($"score: {score}");
-        //Debug.Log($"total questions: {activeQuiz.questions.Count}");
-        //Debug.Log($"{percentToIndicate} percent on indicator");
         switch (percentToIndicate)
         {
             case int i when i>=0 && i<10:
@@ -1122,7 +1065,6 @@ public class MainMenuController : MonoBehaviour
         }
         else
         {
-            //Debug.LogWarning("Question answered, waiting for animation");
             yield return StartCoroutine(WaitForAnimationToComplete());
             if (activeQuiz == null) //e.g. if restart button was clicked mid-animation
             {
@@ -1135,7 +1077,6 @@ public class MainMenuController : MonoBehaviour
 
     private void UpdateTimerUI(int seconds)
     {
-        //Debug.LogWarning($"{seconds} seconds remaining, updating timer UI...");
         switch(seconds)
         {
             case 1:

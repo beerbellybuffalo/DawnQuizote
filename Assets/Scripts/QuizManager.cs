@@ -2,7 +2,6 @@ using System.IO;
 using UnityEngine;
 using System.Linq;
 using static MyQuizzesScriptableObject;
-using Unity.Core;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
 
@@ -35,7 +34,6 @@ public class QuizManager : MonoBehaviour
             myQuizzesData.quizzes = tempData.quizzes;
             Debug.Log("Quiz data successfully loaded from persistent storage.");
 
-            //mainMenuController.ClearMyQuizzesScrollView();
             foreach (var quiz in myQuizzesData.quizzes)
             {
                 mainMenuController.CreateButtonInMyQuizzes(quiz.quizName);
@@ -47,7 +45,6 @@ public class QuizManager : MonoBehaviour
             Debug.Log("No persistent quiz data found.");
         }
     }
-
 
     // Save quizzes to persistent storage
     public void SaveQuizzes()
@@ -63,15 +60,6 @@ public class QuizManager : MonoBehaviour
             Debug.LogWarning("Quiz data file does not exist.");
             return false;
         }
-
-        //// Load JSON data from file
-        //string json = File.ReadAllText(filePath);
-
-        //// Deserialize JSON to a temporary MyQuizzesScriptableObject instance
-        //MyQuizzesScriptableObject tempData = JsonUtility.FromJson<MyQuizzesScriptableObject>(json);
-
-        //// Check if the quiz name exists in the list
-        //bool exists = tempData.quizzes.Any(q => q.quizName == quizName);
 
         // Check if the quiz name exists in the list
         bool exists = myQuizzesData.quizzes.Any(q => q.quizName == quizName);
